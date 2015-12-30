@@ -185,11 +185,6 @@ void SleepMode_Measure(void)
    __HAL_RCC_GPIOE_CLK_DISABLE();
    __HAL_RCC_GPIOH_CLK_DISABLE();
 	
-	
-//	/*rtc_init */
-//  rtc_init();
-//	/*wake up timer*/
-//	rtc_wake_up_timer_config(0x5000);
   /* Suspend Tick increment to prevent wakeup by Systick interrupt. 
      Otherwise the Systick interrupt will wake up the device within 1ms (HAL time base) */
   HAL_SuspendTick();
