@@ -308,10 +308,10 @@ u8_t LSM303AGR_MAG_ReadReg(u8_t Reg, u8_t* Data)
   
   //To be completed with either I2c or SPI reading function
   //i.e.: *Data = SPI_Mems_Read_Reg( Reg );
-  if(!I2C_EXPBD_ReadData(Data, LSM303AGR_MAG_I2C_ADDRESS, Reg, 1))  //[Example]
-	return MEMS_ERROR;                                                        //[Example]
-  else                                                                        //[Example]
-	return MEMS_SUCCESS;                                                      //[Example]
+  return I2C_EXPBD_ReadData(Data, LSM303AGR_MAG_I2C_ADDRESS, Reg, 1);
+    
+
+
 }
 
 /*******************************************************************************
@@ -327,7 +327,8 @@ u8_t LSM303AGR_MAG_WriteReg(u8_t Reg, u8_t Data)
     
   //To be completed with either I2c or SPI writing function
   //i.e.: SPI_Mems_Write_Reg(Reg, Data);
-  return !I2C_EXPBD_WriteData(&Data,  LSM303AGR_MAG_I2C_ADDRESS,  Reg, 1);       //[Example]
+ return I2C_EXPBD_WriteData(&Data,  LSM303AGR_MAG_I2C_ADDRESS,  Reg, 1);
+
 }
 
 /*******************************************************************************
@@ -343,8 +344,10 @@ u8_t LSM303AGR_ACC_ReadReg(u8_t Reg, u8_t* Data)
   
   //To be completed with either I2c or SPI reading function
   //i.e.: *Data = SPI_Mems_Read_Reg( Reg );
-  return !I2C_EXPBD_ReadData(Data, LSM303AGR_ACC_I2C_ADDRESS, Reg, 1);  //[Example]
-
+  if(!I2C_EXPBD_ReadData(Data, LSM303AGR_ACC_I2C_ADDRESS, Reg, 1))  //[Example]
+	return MEMS_ERROR;                                                        //[Example]
+  else                                                                        //[Example]
+	return MEMS_SUCCESS;                                                      //[Example]
 }
 
 /*******************************************************************************

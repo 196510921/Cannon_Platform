@@ -14,7 +14,7 @@ const char *name = "CANNON_V1";
 uint8_t adv_address[] = {0x0C, 0x05, 0x04, 0x03, 0x02, 0x01};	
 #endif
 uint8_t tx_power_level = 7;
-uint16_t adv_interval = 100;
+uint16_t adv_interval = 48;
 
 void jsensor_app_setSensors(void)
 {
@@ -68,6 +68,7 @@ static void sensor_read(void* arg)
 		
 		if(JSENSOR_OK == jsensor_app_read_sensor(JSENSOR_TYPE_MAGNET, (void *)&tdef)) {
 			ble_device_send(0x03, 6, (uint8_t*)MAG);
+      //printf("%x,%x,%x,%x,%x,%x\n\r", MAG[0],MAG[1],MAG[2],MAG[3],MAG[4],MAG[5]);
 		}
 	}
 	// sensor read motion 6 AXIS

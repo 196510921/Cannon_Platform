@@ -64,8 +64,8 @@ typedef union{
 } Type1Axis32bit_U;
 
 typedef enum {
-  MEMS_SUCCESS				=		0x01,
-  MEMS_ERROR				=		0x00	
+  MEMS_SUCCESS				=		0x00,
+  MEMS_ERROR				=		0x01	
 } status_t;
 
 #endif /*__SHARED__TYPES*/
