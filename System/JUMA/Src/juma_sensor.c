@@ -83,12 +83,12 @@ void jsensor_sys_init(void)
 /*init hts221*/
 static void hum_temp_monitor_init(void)
 {
-		BSP_HUM_TEMP_Init();
+	BSP_HUM_TEMP_Init();
 	/* Initialize the HUM temp */
-		while(BSP_HUM_TEMP_isInitialized() != 1) {
-			BSP_HUM_TEMP_Init();
-			HAL_Delay(10);
-		}
+	while(BSP_HUM_TEMP_isInitialized() != 1) {
+		BSP_HUM_TEMP_Init();
+		HAL_Delay(10);
+	}
 }
 
 /*init lps25hb*/
