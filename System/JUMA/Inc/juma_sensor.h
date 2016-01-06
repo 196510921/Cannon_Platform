@@ -52,6 +52,15 @@ typedef struct _JSensor_MAG_data JSensor_MAG_Typedef;
 // system API
 void jsensor_sys_init(void);
 
+void hum_temp_monitor_init(void);
+void pressure_sensor_init(void);
+void lsm6ds3_6_axis_init(void);
+void lsm303agr_init(void);
+void read_temp_hum(void* args);
+void read_pressure(void* args);
+void read_6_Axis_data(void* args);
+void read_raw_magnetometer_data(void* args);
+
 // Application API/callback
 void jsensor_app_setSensors(void);
 void jsensor_app_setSensor(uint16_t sid);

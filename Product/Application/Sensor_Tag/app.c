@@ -1,4 +1,3 @@
-//#include "sensor_service.h"
 
 #include "app.h"
 /*start adv*/
