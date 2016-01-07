@@ -3,17 +3,16 @@
 /*start adv*/
 
 static void sensor_read(void* arg);
+static void adv_name_generate(uint8_t* uni_name);
 
 #ifdef CANNON_V2
-const char *name = "CANNON_V2";
-uint8_t adv_address[] = {0x0D, 0x05, 0x04, 0x03, 0x02, 0x02};	
+char name[] = "CANNON_V2";
 #endif
 #ifdef CANNON_V1
-const char *name = "CANNON_V1";
-uint8_t adv_address[] = {0x0C, 0x05, 0x04, 0x03, 0x02, 0x01};	
+char name[] = "CANNON_V1";
 #endif
 uint8_t tx_power_level = 7;
-uint16_t adv_interval = 48;
+uint16_t adv_interval = 100;
 
 void jsensor_app_setSensors(void)
 {
@@ -25,11 +24,21 @@ void jsensor_app_setSensors(void)
 	
 void on_ready(void)
 {
+  uint8_t bdAddr[6];
+  HCI_get_bdAddr(bdAddr);
+  adv_name_generate(bdAddr+4);
 	/*Config Adv Parameter And Ready to Adv*/
-	ble_set_adv_param((char *)name, adv_address, tx_power_level, adv_interval);
+	ble_set_adv_param(name, bdAddr, tx_power_level, adv_interval);
 	ble_device_start_advertising();
 
-	run_after_delay(sensor_read, NULL, 2000);
+	run_after_delay(sensor_read, NULL, 500);
+}
+
+static void adv_name_generate(uint8_t* uni_name){
+  char temp[3] = "_";
+   /*adv name aplice*/
+  sprintf(temp+1,"%d%d",*uni_name,*(uni_name+1));
+  strcat(name, temp);
 }
 
 static void sensor_read(void* arg)
@@ -83,7 +92,7 @@ static void sensor_read(void* arg)
 		}
 	}
 	
-	run_after_delay(sensor_read, NULL, 2000);
+	run_after_delay(sensor_read, NULL, 500);
 }
 
 /* Device On Message */

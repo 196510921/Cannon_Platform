@@ -233,6 +233,8 @@ void HCI_Wait_For_Response(void);
 void HCI_Isr(void);
 #endif /* __DMA_LP__ */
 
+void HCI_get_bdAddr(uint8_t *addr);
+
 extern tListNode hciReadPktPool;
 extern tListNode hciReadPktRxQueue;
 
