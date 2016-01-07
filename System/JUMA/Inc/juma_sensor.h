@@ -16,6 +16,14 @@
 #include "osal.h"
 #include "debug.h"
 #include "x_nucleo_iks01a1.h"
+#include "x_nucleo_iks01a1_hum_temp.h"
+#include "x_nucleo_iks01a1_pressure.h"
+#include "x_nucleo_iks01a1_imu_6axes.h"
+#include "hts221.h"
+#include "lps25hb.h"
+#include "lps25h.h"
+#include "lsm6ds3.h"
+#include "lsm303agr.h"
 
 #define JSENSOR_TYPE_HUMITY_TEMP		0x01
 #define JSENSOR_TYPE_MOTION_6AXIS		0x02
