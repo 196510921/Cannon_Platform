@@ -17,7 +17,7 @@ static void read_raw_magnetometer_data(void* args);
  */
 __weak void jsensor_app_setSensors(void)
 {
-  return ;
+    return ;
 }
 
 /**
@@ -34,12 +34,12 @@ void jsensor_app_setSensor(uint16_t sid)
 		pressure_sensor_init();
 	}
 	else if (sid == JSENSOR_TYPE_MOTION_6AXIS){
-	  lsm6ds3_6_axis_init();
+        lsm6ds3_6_axis_init();
 	}
 	else if(sid == JSENSOR_TYPE_MAGNET){
 		lsm303agr_init();
 	}
-  return;
+    return;
 }
 
 JSensor_Status jsensor_app_read_sensor(uint16_t sid, void *data)
@@ -52,16 +52,16 @@ JSensor_Status jsensor_app_read_sensor(uint16_t sid, void *data)
 	else if (sid == JSENSOR_TYPE_PRESSURE)
 		read_pressure(data);
 	else if (sid == JSENSOR_TYPE_MOTION_6AXIS)
-	  read_6_Axis_data(data);
+        read_6_Axis_data(data);
 	else if (sid == JSENSOR_TYPE_MAGNET)
-	  read_raw_magnetometer_data(data);	
-  return JSENSOR_OK;
+        read_raw_magnetometer_data(data);	
+    return JSENSOR_OK;
 }
 
 
 void __jsensor_initSensor(void)
 {
-  return;
+    return;
 }
 
 void jsensor_sys_init(void)
@@ -106,41 +106,41 @@ static void lsm6ds3_6_axis_init(void)
 static void lsm303agr_init(void)
 {
 	int8_t ret;
-	#ifdef CANNON_V1
+#ifdef CANNON_V1
 	uint8_t byte_read;
 	
 	//set hub read
-  byte_read = 0x80; 
-  LSM6DS3_IO_Write(&byte_read,	NULL,	0x01,	1);   //enable embeded register
+    byte_read = 0x80; 
+    LSM6DS3_IO_Write(&byte_read,	NULL,	0x01,	1);   //enable embeded register
            
-  byte_read = 0x3d; 
-  LSM6DS3_IO_Write(&byte_read,	NULL,	0x02,	1);   //set lis3mdl i2c address and read mode
+    byte_read = 0x3d; 
+    LSM6DS3_IO_Write(&byte_read,	NULL,	0x02,	1);   //set lis3mdl i2c address and read mode
            
 	byte_read = 0x68; 
 	LSM6DS3_IO_Write(&byte_read,	NULL,	0x03,	1);   //set register address as 0x68
            
-  byte_read = 0x06; 
-  LSM6DS3_IO_Write(&byte_read,	NULL, 0x04,	1);   //6 register length
+    byte_read = 0x06; 
+    LSM6DS3_IO_Write(&byte_read,	NULL, 0x04,	1);   //6 register length
            
 
-  byte_read = 0x00; 
-  LSM6DS3_IO_Write(&byte_read,	NULL, 0x01,	1);   //disable embeded register
+    byte_read = 0x00; 
+    LSM6DS3_IO_Write(&byte_read,	NULL, 0x01,	1);   //disable embeded register
            
-  //byte_read = 0x04;
+    //byte_read = 0x04;
 	byte_read = 0x3c;
-  LSM6DS3_IO_Write(&byte_read,	NULL, 0x19,	1);   //enable embeded funciton
+    LSM6DS3_IO_Write(&byte_read,	NULL, 0x19,	1);   //enable embeded funciton
            
-  byte_read = 0x09; 
-  LSM6DS3_IO_Write(&byte_read,	NULL, 0x1a,	1);   //enable pull_up and master
-	#endif
+    byte_read = 0x09; 
+    LSM6DS3_IO_Write(&byte_read,	NULL, 0x1a,	1);   //enable pull_up and master
+#endif
 	
-	#ifdef CANNON_V2
-		ret = init_LSM303AGR_mag(LSM303AGR_MAG_ODR_100Hz);
-		while(ret == -1)
-		{
+#ifdef CANNON_V2
+    ret = init_LSM303AGR_mag(LSM303AGR_MAG_ODR_100Hz);
+    while(ret == -1)
+    {
 		
-		}
-	#endif
+    }
+#endif
 }
 
 /*Accept humidity,tempreture data*/
@@ -181,14 +181,11 @@ static void read_pressure(void* args)
 		
 		pressure = (uint32_t)(fPress*100);
 		*p->pressure = (
-										(((pressure >> 16) & 0xFF) << 0)  |
-										(((pressure >> 8)  & 0xFF) << 8)  |
-										(((pressure >> 0)  & 0xFF)  << 16)
-									);
-										
-		
+            (((pressure >> 16) & 0xFF) << 0)  |
+            (((pressure >> 8)  & 0xFF) << 8)  |
+            (((pressure >> 0)  & 0xFF)  << 16)
+            );
 	}	
-
 }
 	
 /*Read 6 Axis Data*/
@@ -226,7 +223,7 @@ static void read_raw_magnetometer_data(void* args)
 	uint8_t *mag = p->MAG;
 #ifdef CANNON_V1
 	              
-  LSM6DS3_IO_Read(mag, NULL, 0x2e, 6); //read magnetometer data from sensorhub_reg[0]
+    LSM6DS3_IO_Read(mag, NULL, 0x2e, 6); //read magnetometer data from sensorhub_reg[0]
 #endif
 	
 #ifdef CANNON_V2

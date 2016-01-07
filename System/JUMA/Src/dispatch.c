@@ -27,7 +27,7 @@ static void dispatch_head_op(dispatch_queue_t* q, uint32_t now);
 
 void dispatch_init( void )
 {
-	 int i;
+    int i;
     for (i=0; i<DISPATCH_OP_POOL_SIZE-1; i++) {
         op_pool[i].next = &op_pool[i+1];
     }
@@ -54,7 +54,7 @@ static operation_t* allocate( void )
 }
 
 void run_when_idle(function_t func,
-                     void* args)
+                   void* args)
 {
     dispatch_queue_t* q;
     operation_t* op;
@@ -93,7 +93,7 @@ static void set_timer(uint32_t v)
 }
 
 void run_at_time(function_t func,
-                    void* args, uint32_t timestamp)
+                 void* args, uint32_t timestamp)
 {
     dispatch_queue_t* q;
     operation_t* op;
@@ -192,22 +192,22 @@ static void dispatch_head_op(dispatch_queue_t* q, uint32_t now)
     
 static void reset_rtc( void )
 {
-		uint32_t now, head_time, next_time, sleep_time;
+    uint32_t now, head_time, next_time, sleep_time;
 
     if (timerq.head) {
         now = current_time();
         head_time = timerq.head->timestamp;
-				sleep_time = (head_time - now) & RTC_COUNTER_MASK;
+        sleep_time = (head_time - now) & RTC_COUNTER_MASK;
        
-			if (LATTER_THAN(head_time, now+MIN_RTC_DELAY)) {
-						sleep_flag_set(1);
-						set_timer(sleep_time);
+        if (LATTER_THAN(head_time, now+MIN_RTC_DELAY)) {
+            sleep_flag_set(1);
+            set_timer(sleep_time);
         } else {
-						sleep_flag_set(0);
+            sleep_flag_set(0);
         }
 				
     } else {
 
-				set_timer(50000);
+        set_timer(50000);
     }
 }
