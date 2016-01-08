@@ -5,7 +5,7 @@
 * Version            : v1.00
 * Date               : 28/Apr/2015
 * Description        : LSM303AGR ACC driver source file
-*
+*                      
 * Reviewed by: Armando Visconti
 *-------------------------------------------------------------------------------
 *
@@ -39,32 +39,32 @@
 
 /*******************************************************************************
 * Function Name		: SwapHighLowByte
-* Description		: Swap High/low byte in multiple byte values
+* Description		: Swap High/low byte in multiple byte values 
 *                     It works with minimum 2 byte for every dimension.
 *                     Example x,y,z with 2 byte for every dimension
 *
-* Input				: bufferToSwap -> buffer to swap
+* Input				: bufferToSwap -> buffer to swap 
 *                     numberOfByte -> the buffer length in byte
-*                     dimension -> number of dimension
+*                     dimension -> number of dimension 
 *
-* Output			: bufferToSwap -> buffer swapped
+* Output			: bufferToSwap -> buffer swapped 
 * Return			: None
 *******************************************************************************/
 void LSM303AGR_MAG_SwapHighLowByte(u8_t *bufferToSwap, u8_t numberOfByte, u8_t dimension)
 {
 
-    u8_t numberOfByteForDimension, i, j;
-    u8_t tempValue[10];
-
-    numberOfByteForDimension=numberOfByte/dimension;
-
-    for (i=0; i<dimension; i++ )
-    {
-        for (j=0; j<numberOfByteForDimension; j++ )
-            tempValue[j]=bufferToSwap[j+i*numberOfByteForDimension];
-        for (j=0; j<numberOfByteForDimension; j++ )
-            *(bufferToSwap+i*(numberOfByteForDimension)+j)=*(tempValue+(numberOfByteForDimension-1)-j);
-    }
+  u8_t numberOfByteForDimension, i, j;
+  u8_t tempValue[10];
+  
+  numberOfByteForDimension=numberOfByte/dimension;
+  
+  for (i=0; i<dimension;i++ )
+  {
+	for (j=0; j<numberOfByteForDimension;j++ )
+		tempValue[j]=bufferToSwap[j+i*numberOfByteForDimension];
+	for (j=0; j<numberOfByteForDimension;j++ )
+		*(bufferToSwap+i*(numberOfByteForDimension)+j)=*(tempValue+(numberOfByteForDimension-1)-j);
+  } 
 }
 
 /* Exported functions ---------------------------------------------------------*/
@@ -78,40 +78,40 @@ void LSM303AGR_MAG_SwapHighLowByte(u8_t *bufferToSwap, u8_t numberOfByte, u8_t d
 *******************************************************************************/
 status_t  LSM303AGR_MAG_W_OFF_X_L(u8_t newValue)
 {
-    u8_t value;
+  u8_t value;
 
-    newValue = newValue << LSM303AGR_MAG_OFF_X_L_POSITION; //mask
-    newValue &= LSM303AGR_MAG_OFF_X_L_MASK; //coerce
+  newValue = newValue << LSM303AGR_MAG_OFF_X_L_POSITION; //mask	
+  newValue &= LSM303AGR_MAG_OFF_X_L_MASK; //coerce
+  
+  if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_OFFSET_X_REG_L, &value) )
+    return MEMS_ERROR;
 
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_OFFSET_X_REG_L, &value) )
-        return MEMS_ERROR;
+  value &= ~LSM303AGR_MAG_OFF_X_L_MASK; 
+  value |= newValue;
+  
+  if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_OFFSET_X_REG_L, value) )
+    return MEMS_ERROR;
 
-    value &= ~LSM303AGR_MAG_OFF_X_L_MASK;
-    value |= newValue;
-
-    if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_OFFSET_X_REG_L, value) )
-        return MEMS_ERROR;
-
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_R_OFF_X_L
 * Description    : Read OFF_X_L
 * Input          : Pointer to u8_t
-* Output         : Status of OFF_X_L
+* Output         : Status of OFF_X_L 
 * Return         : Status [MEMS_ERROR, MEMS_SUCCESS]
 *******************************************************************************/
 
 status_t LSM303AGR_MAG_R_OFF_X_L(u8_t *value)
 {
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_OFFSET_X_REG_L, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_OFFSET_X_REG_L, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_OFF_X_L_MASK; //coerce
-    *value = *value >> LSM303AGR_MAG_OFF_X_L_POSITION; //mask
+  *value &= LSM303AGR_MAG_OFF_X_L_MASK; //coerce	
+  *value = *value >> LSM303AGR_MAG_OFF_X_L_POSITION; //mask	
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_W_OFF_X_H
@@ -122,40 +122,40 @@ status_t LSM303AGR_MAG_R_OFF_X_L(u8_t *value)
 *******************************************************************************/
 status_t  LSM303AGR_MAG_W_OFF_X_H(u8_t newValue)
 {
-    u8_t value;
+  u8_t value;
 
-    newValue = newValue << LSM303AGR_MAG_OFF_X_H_POSITION; //mask
-    newValue &= LSM303AGR_MAG_OFF_X_H_MASK; //coerce
+  newValue = newValue << LSM303AGR_MAG_OFF_X_H_POSITION; //mask	
+  newValue &= LSM303AGR_MAG_OFF_X_H_MASK; //coerce
+  
+  if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_OFFSET_X_REG_H, &value) )
+    return MEMS_ERROR;
 
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_OFFSET_X_REG_H, &value) )
-        return MEMS_ERROR;
+  value &= ~LSM303AGR_MAG_OFF_X_H_MASK; 
+  value |= newValue;
+  
+  if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_OFFSET_X_REG_H, value) )
+    return MEMS_ERROR;
 
-    value &= ~LSM303AGR_MAG_OFF_X_H_MASK;
-    value |= newValue;
-
-    if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_OFFSET_X_REG_H, value) )
-        return MEMS_ERROR;
-
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_R_OFF_X_H
 * Description    : Read OFF_X_H
 * Input          : Pointer to u8_t
-* Output         : Status of OFF_X_H
+* Output         : Status of OFF_X_H 
 * Return         : Status [MEMS_ERROR, MEMS_SUCCESS]
 *******************************************************************************/
 
 status_t LSM303AGR_MAG_R_OFF_X_H(u8_t *value)
 {
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_OFFSET_X_REG_H, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_OFFSET_X_REG_H, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_OFF_X_H_MASK; //coerce
-    *value = *value >> LSM303AGR_MAG_OFF_X_H_POSITION; //mask
+  *value &= LSM303AGR_MAG_OFF_X_H_MASK; //coerce	
+  *value = *value >> LSM303AGR_MAG_OFF_X_H_POSITION; //mask	
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_W_OFF_Y_L
@@ -166,40 +166,40 @@ status_t LSM303AGR_MAG_R_OFF_X_H(u8_t *value)
 *******************************************************************************/
 status_t  LSM303AGR_MAG_W_OFF_Y_L(u8_t newValue)
 {
-    u8_t value;
+  u8_t value;
 
-    newValue = newValue << LSM303AGR_MAG_OFF_Y_L_POSITION; //mask
-    newValue &= LSM303AGR_MAG_OFF_Y_L_MASK; //coerce
+  newValue = newValue << LSM303AGR_MAG_OFF_Y_L_POSITION; //mask	
+  newValue &= LSM303AGR_MAG_OFF_Y_L_MASK; //coerce
+  
+  if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_OFFSET_Y_REG_L, &value) )
+    return MEMS_ERROR;
 
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_OFFSET_Y_REG_L, &value) )
-        return MEMS_ERROR;
+  value &= ~LSM303AGR_MAG_OFF_Y_L_MASK; 
+  value |= newValue;
+  
+  if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_OFFSET_Y_REG_L, value) )
+    return MEMS_ERROR;
 
-    value &= ~LSM303AGR_MAG_OFF_Y_L_MASK;
-    value |= newValue;
-
-    if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_OFFSET_Y_REG_L, value) )
-        return MEMS_ERROR;
-
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_R_OFF_Y_L
 * Description    : Read OFF_Y_L
 * Input          : Pointer to u8_t
-* Output         : Status of OFF_Y_L
+* Output         : Status of OFF_Y_L 
 * Return         : Status [MEMS_ERROR, MEMS_SUCCESS]
 *******************************************************************************/
 
 status_t LSM303AGR_MAG_R_OFF_Y_L(u8_t *value)
 {
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_OFFSET_Y_REG_L, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_OFFSET_Y_REG_L, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_OFF_Y_L_MASK; //coerce
-    *value = *value >> LSM303AGR_MAG_OFF_Y_L_POSITION; //mask
+  *value &= LSM303AGR_MAG_OFF_Y_L_MASK; //coerce	
+  *value = *value >> LSM303AGR_MAG_OFF_Y_L_POSITION; //mask	
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_W_OFF_Y_H
@@ -210,40 +210,40 @@ status_t LSM303AGR_MAG_R_OFF_Y_L(u8_t *value)
 *******************************************************************************/
 status_t  LSM303AGR_MAG_W_OFF_Y_H(u8_t newValue)
 {
-    u8_t value;
+  u8_t value;
 
-    newValue = newValue << LSM303AGR_MAG_OFF_Y_H_POSITION; //mask
-    newValue &= LSM303AGR_MAG_OFF_Y_H_MASK; //coerce
+  newValue = newValue << LSM303AGR_MAG_OFF_Y_H_POSITION; //mask	
+  newValue &= LSM303AGR_MAG_OFF_Y_H_MASK; //coerce
+  
+  if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_OFFSET_Y_REG_H, &value) )
+    return MEMS_ERROR;
 
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_OFFSET_Y_REG_H, &value) )
-        return MEMS_ERROR;
+  value &= ~LSM303AGR_MAG_OFF_Y_H_MASK; 
+  value |= newValue;
+  
+  if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_OFFSET_Y_REG_H, value) )
+    return MEMS_ERROR;
 
-    value &= ~LSM303AGR_MAG_OFF_Y_H_MASK;
-    value |= newValue;
-
-    if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_OFFSET_Y_REG_H, value) )
-        return MEMS_ERROR;
-
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_R_OFF_Y_H
 * Description    : Read OFF_Y_H
 * Input          : Pointer to u8_t
-* Output         : Status of OFF_Y_H
+* Output         : Status of OFF_Y_H 
 * Return         : Status [MEMS_ERROR, MEMS_SUCCESS]
 *******************************************************************************/
 
 status_t LSM303AGR_MAG_R_OFF_Y_H(u8_t *value)
 {
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_OFFSET_Y_REG_H, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_OFFSET_Y_REG_H, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_OFF_Y_H_MASK; //coerce
-    *value = *value >> LSM303AGR_MAG_OFF_Y_H_POSITION; //mask
+  *value &= LSM303AGR_MAG_OFF_Y_H_MASK; //coerce	
+  *value = *value >> LSM303AGR_MAG_OFF_Y_H_POSITION; //mask	
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_W_OFF_Z_L
@@ -254,40 +254,40 @@ status_t LSM303AGR_MAG_R_OFF_Y_H(u8_t *value)
 *******************************************************************************/
 status_t  LSM303AGR_MAG_W_OFF_Z_L(u8_t newValue)
 {
-    u8_t value;
+  u8_t value;
 
-    newValue = newValue << LSM303AGR_MAG_OFF_Z_L_POSITION; //mask
-    newValue &= LSM303AGR_MAG_OFF_Z_L_MASK; //coerce
+  newValue = newValue << LSM303AGR_MAG_OFF_Z_L_POSITION; //mask	
+  newValue &= LSM303AGR_MAG_OFF_Z_L_MASK; //coerce
+  
+  if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_OFFSET_Z_REG_L, &value) )
+    return MEMS_ERROR;
 
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_OFFSET_Z_REG_L, &value) )
-        return MEMS_ERROR;
+  value &= ~LSM303AGR_MAG_OFF_Z_L_MASK; 
+  value |= newValue;
+  
+  if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_OFFSET_Z_REG_L, value) )
+    return MEMS_ERROR;
 
-    value &= ~LSM303AGR_MAG_OFF_Z_L_MASK;
-    value |= newValue;
-
-    if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_OFFSET_Z_REG_L, value) )
-        return MEMS_ERROR;
-
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_R_OFF_Z_L
 * Description    : Read OFF_Z_L
 * Input          : Pointer to u8_t
-* Output         : Status of OFF_Z_L
+* Output         : Status of OFF_Z_L 
 * Return         : Status [MEMS_ERROR, MEMS_SUCCESS]
 *******************************************************************************/
 
 status_t LSM303AGR_MAG_R_OFF_Z_L(u8_t *value)
 {
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_OFFSET_Z_REG_L, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_OFFSET_Z_REG_L, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_OFF_Z_L_MASK; //coerce
-    *value = *value >> LSM303AGR_MAG_OFF_Z_L_POSITION; //mask
+  *value &= LSM303AGR_MAG_OFF_Z_L_MASK; //coerce	
+  *value = *value >> LSM303AGR_MAG_OFF_Z_L_POSITION; //mask	
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_W_OFF_Z_H
@@ -298,21 +298,21 @@ status_t LSM303AGR_MAG_R_OFF_Z_L(u8_t *value)
 *******************************************************************************/
 status_t  LSM303AGR_MAG_W_OFF_Z_H(u8_t newValue)
 {
-    u8_t value;
+  u8_t value;
 
-    newValue = newValue << LSM303AGR_MAG_OFF_Z_H_POSITION; //mask
-    newValue &= LSM303AGR_MAG_OFF_Z_H_MASK; //coerce
+  newValue = newValue << LSM303AGR_MAG_OFF_Z_H_POSITION; //mask	
+  newValue &= LSM303AGR_MAG_OFF_Z_H_MASK; //coerce
+  
+  if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_OFFSET_Z_REG_H, &value) )
+    return MEMS_ERROR;
 
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_OFFSET_Z_REG_H, &value) )
-        return MEMS_ERROR;
+  value &= ~LSM303AGR_MAG_OFF_Z_H_MASK; 
+  value |= newValue;
+  
+  if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_OFFSET_Z_REG_H, value) )
+    return MEMS_ERROR;
 
-    value &= ~LSM303AGR_MAG_OFF_Z_H_MASK;
-    value |= newValue;
-
-    if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_OFFSET_Z_REG_H, value) )
-        return MEMS_ERROR;
-
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 
 /*******************************************************************************
@@ -320,78 +320,78 @@ status_t  LSM303AGR_MAG_W_OFF_Z_H(u8_t newValue)
 *******************************************************************************/
 status_t LSM303AGR_MAG_Get_MagOff(u16_t *magx_off, u16_t *magy_off, u16_t *magz_off)
 {
-    u8_t reg_l, reg_h;
+  u8_t reg_l, reg_h;
 
-    /* read mag_x_off */
-    LSM303AGR_MAG_R_OFF_X_L(&reg_l);
-    LSM303AGR_MAG_R_OFF_X_H(&reg_h);
-    *magx_off = ((reg_h << 8) & 0xff00) | reg_l;
+  /* read mag_x_off */
+  LSM303AGR_MAG_R_OFF_X_L(&reg_l);
+  LSM303AGR_MAG_R_OFF_X_H(&reg_h);
+  *magx_off = ((reg_h << 8) & 0xff00) | reg_l;
 
-    /* read mag_y_off */
-    LSM303AGR_MAG_R_OFF_Y_L(&reg_l);
-    LSM303AGR_MAG_R_OFF_Y_H(&reg_h);
-    *magy_off = ((reg_h << 8) & 0xff00) | reg_l;
+  /* read mag_y_off */
+  LSM303AGR_MAG_R_OFF_Y_L(&reg_l);
+  LSM303AGR_MAG_R_OFF_Y_H(&reg_h);
+  *magy_off = ((reg_h << 8) & 0xff00) | reg_l;
 
-    /* read mag_z_off */
-    LSM303AGR_MAG_R_OFF_Z_L(&reg_l);
-    LSM303AGR_MAG_R_OFF_Z_H(&reg_h);
-    *magz_off = ((reg_h << 8) & 0xff00) | reg_l;
+  /* read mag_z_off */
+  LSM303AGR_MAG_R_OFF_Z_L(&reg_l);
+  LSM303AGR_MAG_R_OFF_Z_H(&reg_h);
+  *magz_off = ((reg_h << 8) & 0xff00) | reg_l;
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 
 status_t LSM303AGR_MAG_Set_MagOff(u16_t magx_off, u16_t magy_off, u16_t magz_off)
 {
-    /* write mag_x_off */
-    LSM303AGR_MAG_W_OFF_X_L(magx_off & 0xff);
-    LSM303AGR_MAG_W_OFF_X_H((magx_off >> 8) & 0xff);
+  /* write mag_x_off */
+  LSM303AGR_MAG_W_OFF_X_L(magx_off & 0xff);
+  LSM303AGR_MAG_W_OFF_X_H((magx_off >> 8) & 0xff);
 
-    /* write mag_y_off */
-    LSM303AGR_MAG_W_OFF_Y_L(magy_off & 0xff);
-    LSM303AGR_MAG_W_OFF_Y_H((magy_off >> 8) & 0xff);
+  /* write mag_y_off */
+  LSM303AGR_MAG_W_OFF_Y_L(magy_off & 0xff);
+  LSM303AGR_MAG_W_OFF_Y_H((magy_off >> 8) & 0xff);
 
-    /* write mag_z_off */
-    LSM303AGR_MAG_W_OFF_Z_L(magz_off & 0xff);
-    LSM303AGR_MAG_W_OFF_Z_H((magz_off >> 8) & 0xff);
+  /* write mag_z_off */
+  LSM303AGR_MAG_W_OFF_Z_L(magz_off & 0xff);
+  LSM303AGR_MAG_W_OFF_Z_H((magz_off >> 8) & 0xff);
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_R_OFF_Z_H
 * Description    : Read OFF_Z_H
 * Input          : Pointer to u8_t
-* Output         : Status of OFF_Z_H
+* Output         : Status of OFF_Z_H 
 * Return         : Status [MEMS_ERROR, MEMS_SUCCESS]
 *******************************************************************************/
 
 status_t LSM303AGR_MAG_R_OFF_Z_H(u8_t *value)
 {
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_OFFSET_Z_REG_H, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_OFFSET_Z_REG_H, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_OFF_Z_H_MASK; //coerce
-    *value = *value >> LSM303AGR_MAG_OFF_Z_H_POSITION; //mask
+  *value &= LSM303AGR_MAG_OFF_Z_H_MASK; //coerce	
+  *value = *value >> LSM303AGR_MAG_OFF_Z_H_POSITION; //mask	
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_R_WHO_AM_I
 * Description    : Read WHO_AM_I
 * Input          : Pointer to u8_t
-* Output         : Status of WHO_AM_I
+* Output         : Status of WHO_AM_I 
 * Return         : Status [MEMS_ERROR, MEMS_SUCCESS]
 *******************************************************************************/
 
 status_t LSM303AGR_MAG_R_WHO_AM_I(u8_t *value)
 {
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_WHO_AM_I_REG, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_WHO_AM_I_REG, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_WHO_AM_I_MASK; //coerce
-    *value = *value >> LSM303AGR_MAG_WHO_AM_I_POSITION; //mask
+  *value &= LSM303AGR_MAG_WHO_AM_I_MASK; //coerce	
+  *value = *value >> LSM303AGR_MAG_WHO_AM_I_POSITION; //mask	
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_W_MD
@@ -402,18 +402,18 @@ status_t LSM303AGR_MAG_R_WHO_AM_I(u8_t *value)
 *******************************************************************************/
 status_t  LSM303AGR_MAG_W_MD(LSM303AGR_MAG_MD_t newValue)
 {
-    u8_t value;
+  u8_t value;
 
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_A, &value) )
-        return MEMS_ERROR;
+  if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_A, &value) )
+    return MEMS_ERROR;
 
-    value &= ~LSM303AGR_MAG_MD_MASK;
-    value |= newValue;
+  value &= ~LSM303AGR_MAG_MD_MASK; 
+  value |= newValue;
+  
+  if( !LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_CFG_REG_A, value) )
+    return MEMS_ERROR;
 
-    if( !LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_CFG_REG_A, value) )
-        return MEMS_ERROR;
-
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 
 /*******************************************************************************
@@ -426,12 +426,12 @@ status_t  LSM303AGR_MAG_W_MD(LSM303AGR_MAG_MD_t newValue)
 
 status_t LSM303AGR_MAG_R_MD(LSM303AGR_MAG_MD_t *value)
 {
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_A, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_A, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_MD_MASK; //mask
+  *value &= LSM303AGR_MAG_MD_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_W_ODR
@@ -442,18 +442,18 @@ status_t LSM303AGR_MAG_R_MD(LSM303AGR_MAG_MD_t *value)
 *******************************************************************************/
 status_t  LSM303AGR_MAG_W_ODR(LSM303AGR_MAG_ODR_t newValue)
 {
-    u8_t value;
+  u8_t value;
 
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_A, &value) )
-        return MEMS_ERROR;
+  if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_A, &value) )
+    return MEMS_ERROR;
 
-    value &= ~LSM303AGR_MAG_ODR_MASK;
-    value |= newValue;
+  value &= ~LSM303AGR_MAG_ODR_MASK; 
+  value |= newValue;
+  
+  if( !LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_CFG_REG_A, value) )
+    return MEMS_ERROR;
 
-    if( !LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_CFG_REG_A, value) )
-        return MEMS_ERROR;
-
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 
 /*******************************************************************************
@@ -466,12 +466,12 @@ status_t  LSM303AGR_MAG_W_ODR(LSM303AGR_MAG_ODR_t newValue)
 
 status_t LSM303AGR_MAG_R_ODR(LSM303AGR_MAG_ODR_t *value)
 {
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_A, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_A, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_ODR_MASK; //mask
+  *value &= LSM303AGR_MAG_ODR_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_W_LP
@@ -482,18 +482,18 @@ status_t LSM303AGR_MAG_R_ODR(LSM303AGR_MAG_ODR_t *value)
 *******************************************************************************/
 status_t  LSM303AGR_MAG_W_LP(LSM303AGR_MAG_LP_t newValue)
 {
-    u8_t value;
+  u8_t value;
 
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_A, &value) )
-        return MEMS_ERROR;
+  if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_A, &value) )
+    return MEMS_ERROR;
 
-    value &= ~LSM303AGR_MAG_LP_MASK;
-    value |= newValue;
+  value &= ~LSM303AGR_MAG_LP_MASK; 
+  value |= newValue;
+  
+  if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_CFG_REG_A, value) )
+    return MEMS_ERROR;
 
-    if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_CFG_REG_A, value) )
-        return MEMS_ERROR;
-
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 
 /*******************************************************************************
@@ -506,12 +506,12 @@ status_t  LSM303AGR_MAG_W_LP(LSM303AGR_MAG_LP_t newValue)
 
 status_t LSM303AGR_MAG_R_LP(LSM303AGR_MAG_LP_t *value)
 {
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_A, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_A, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_LP_MASK; //mask
+  *value &= LSM303AGR_MAG_LP_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_W_SOFT_RST
@@ -522,18 +522,18 @@ status_t LSM303AGR_MAG_R_LP(LSM303AGR_MAG_LP_t *value)
 *******************************************************************************/
 status_t  LSM303AGR_MAG_W_SOFT_RST(LSM303AGR_MAG_SOFT_RST_t newValue)
 {
-    u8_t value;
+  u8_t value;
 
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_A, &value) )
-        return MEMS_ERROR;
+  if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_A, &value) )
+    return MEMS_ERROR;
 
-    value &= ~LSM303AGR_MAG_SOFT_RST_MASK;
-    value |= newValue;
+  value &= ~LSM303AGR_MAG_SOFT_RST_MASK; 
+  value |= newValue;
+  
+  if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_CFG_REG_A, value) )
+    return MEMS_ERROR;
 
-    if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_CFG_REG_A, value) )
-        return MEMS_ERROR;
-
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 
 /*******************************************************************************
@@ -546,12 +546,12 @@ status_t  LSM303AGR_MAG_W_SOFT_RST(LSM303AGR_MAG_SOFT_RST_t newValue)
 
 status_t LSM303AGR_MAG_R_SOFT_RST(LSM303AGR_MAG_SOFT_RST_t *value)
 {
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_A, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_A, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_SOFT_RST_MASK; //mask
+  *value &= LSM303AGR_MAG_SOFT_RST_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_W_LPF
@@ -562,18 +562,18 @@ status_t LSM303AGR_MAG_R_SOFT_RST(LSM303AGR_MAG_SOFT_RST_t *value)
 *******************************************************************************/
 status_t  LSM303AGR_MAG_W_LPF(LSM303AGR_MAG_LPF_t newValue)
 {
-    u8_t value;
+  u8_t value;
 
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_B, &value) )
-        return MEMS_ERROR;
+  if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_B, &value) )
+    return MEMS_ERROR;
 
-    value &= ~LSM303AGR_MAG_LPF_MASK;
-    value |= newValue;
+  value &= ~LSM303AGR_MAG_LPF_MASK; 
+  value |= newValue;
+  
+  if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_CFG_REG_B, value) )
+    return MEMS_ERROR;
 
-    if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_CFG_REG_B, value) )
-        return MEMS_ERROR;
-
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 
 /*******************************************************************************
@@ -586,12 +586,12 @@ status_t  LSM303AGR_MAG_W_LPF(LSM303AGR_MAG_LPF_t newValue)
 
 status_t LSM303AGR_MAG_R_LPF(LSM303AGR_MAG_LPF_t *value)
 {
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_B, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_B, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_LPF_MASK; //mask
+  *value &= LSM303AGR_MAG_LPF_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_W_OFF_CANC
@@ -602,18 +602,18 @@ status_t LSM303AGR_MAG_R_LPF(LSM303AGR_MAG_LPF_t *value)
 *******************************************************************************/
 status_t  LSM303AGR_MAG_W_OFF_CANC(LSM303AGR_MAG_OFF_CANC_t newValue)
 {
-    u8_t value;
+  u8_t value;
 
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_B, &value) )
-        return MEMS_ERROR;
+  if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_B, &value) )
+    return MEMS_ERROR;
 
-    value &= ~LSM303AGR_MAG_OFF_CANC_MASK;
-    value |= newValue;
+  value &= ~LSM303AGR_MAG_OFF_CANC_MASK; 
+  value |= newValue;
+  
+  if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_CFG_REG_B, value) )
+    return MEMS_ERROR;
 
-    if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_CFG_REG_B, value) )
-        return MEMS_ERROR;
-
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 
 /*******************************************************************************
@@ -626,12 +626,12 @@ status_t  LSM303AGR_MAG_W_OFF_CANC(LSM303AGR_MAG_OFF_CANC_t newValue)
 
 status_t LSM303AGR_MAG_R_OFF_CANC(LSM303AGR_MAG_OFF_CANC_t *value)
 {
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_B, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_B, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_OFF_CANC_MASK; //mask
+  *value &= LSM303AGR_MAG_OFF_CANC_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_W_SET_FREQ
@@ -642,18 +642,18 @@ status_t LSM303AGR_MAG_R_OFF_CANC(LSM303AGR_MAG_OFF_CANC_t *value)
 *******************************************************************************/
 status_t  LSM303AGR_MAG_W_SET_FREQ(LSM303AGR_MAG_SET_FREQ_t newValue)
 {
-    u8_t value;
+  u8_t value;
 
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_B, &value) )
-        return MEMS_ERROR;
+  if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_B, &value) )
+    return MEMS_ERROR;
 
-    value &= ~LSM303AGR_MAG_SET_FREQ_MASK;
-    value |= newValue;
+  value &= ~LSM303AGR_MAG_SET_FREQ_MASK; 
+  value |= newValue;
+  
+  if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_CFG_REG_B, value) )
+    return MEMS_ERROR;
 
-    if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_CFG_REG_B, value) )
-        return MEMS_ERROR;
-
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 
 /*******************************************************************************
@@ -666,12 +666,12 @@ status_t  LSM303AGR_MAG_W_SET_FREQ(LSM303AGR_MAG_SET_FREQ_t newValue)
 
 status_t LSM303AGR_MAG_R_SET_FREQ(LSM303AGR_MAG_SET_FREQ_t *value)
 {
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_B, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_B, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_SET_FREQ_MASK; //mask
+  *value &= LSM303AGR_MAG_SET_FREQ_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_W_INT_ON_DATAOFF
@@ -682,18 +682,18 @@ status_t LSM303AGR_MAG_R_SET_FREQ(LSM303AGR_MAG_SET_FREQ_t *value)
 *******************************************************************************/
 status_t  LSM303AGR_MAG_W_INT_ON_DATAOFF(LSM303AGR_MAG_INT_ON_DATAOFF_t newValue)
 {
-    u8_t value;
+  u8_t value;
 
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_B, &value) )
-        return MEMS_ERROR;
+  if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_B, &value) )
+    return MEMS_ERROR;
 
-    value &= ~LSM303AGR_MAG_INT_ON_DATAOFF_MASK;
-    value |= newValue;
+  value &= ~LSM303AGR_MAG_INT_ON_DATAOFF_MASK; 
+  value |= newValue;
+  
+  if( !LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_CFG_REG_B, value) )
+    return MEMS_ERROR;
 
-    if( !LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_CFG_REG_B, value) )
-        return MEMS_ERROR;
-
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 
 /*******************************************************************************
@@ -706,12 +706,12 @@ status_t  LSM303AGR_MAG_W_INT_ON_DATAOFF(LSM303AGR_MAG_INT_ON_DATAOFF_t newValue
 
 status_t LSM303AGR_MAG_R_INT_ON_DATAOFF(LSM303AGR_MAG_INT_ON_DATAOFF_t *value)
 {
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_B, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_B, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_INT_ON_DATAOFF_MASK; //mask
+  *value &= LSM303AGR_MAG_INT_ON_DATAOFF_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_W_INT_MAG
@@ -722,18 +722,18 @@ status_t LSM303AGR_MAG_R_INT_ON_DATAOFF(LSM303AGR_MAG_INT_ON_DATAOFF_t *value)
 *******************************************************************************/
 status_t  LSM303AGR_MAG_W_INT_MAG(LSM303AGR_MAG_INT_MAG_t newValue)
 {
-    u8_t value;
+  u8_t value;
 
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_C, &value) )
-        return MEMS_ERROR;
+  if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_C, &value) )
+    return MEMS_ERROR;
 
-    value &= ~LSM303AGR_MAG_INT_MAG_MASK;
-    value |= newValue;
+  value &= ~LSM303AGR_MAG_INT_MAG_MASK; 
+  value |= newValue;
+  
+  if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_CFG_REG_C, value) )
+    return MEMS_ERROR;
 
-    if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_CFG_REG_C, value) )
-        return MEMS_ERROR;
-
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 
 /*******************************************************************************
@@ -746,12 +746,12 @@ status_t  LSM303AGR_MAG_W_INT_MAG(LSM303AGR_MAG_INT_MAG_t newValue)
 
 status_t LSM303AGR_MAG_R_INT_MAG(LSM303AGR_MAG_INT_MAG_t *value)
 {
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_C, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_C, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_INT_MAG_MASK; //mask
+  *value &= LSM303AGR_MAG_INT_MAG_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_W_ST
@@ -762,18 +762,18 @@ status_t LSM303AGR_MAG_R_INT_MAG(LSM303AGR_MAG_INT_MAG_t *value)
 *******************************************************************************/
 status_t  LSM303AGR_MAG_W_ST(LSM303AGR_MAG_ST_t newValue)
 {
-    u8_t value;
+  u8_t value;
 
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_C, &value) )
-        return MEMS_ERROR;
+  if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_C, &value) )
+    return MEMS_ERROR;
 
-    value &= ~LSM303AGR_MAG_ST_MASK;
-    value |= newValue;
+  value &= ~LSM303AGR_MAG_ST_MASK; 
+  value |= newValue;
+  
+  if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_CFG_REG_C, value) )
+    return MEMS_ERROR;
 
-    if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_CFG_REG_C, value) )
-        return MEMS_ERROR;
-
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 
 /*******************************************************************************
@@ -786,12 +786,12 @@ status_t  LSM303AGR_MAG_W_ST(LSM303AGR_MAG_ST_t newValue)
 
 status_t LSM303AGR_MAG_R_ST(LSM303AGR_MAG_ST_t *value)
 {
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_C, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_C, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_ST_MASK; //mask
+  *value &= LSM303AGR_MAG_ST_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_W_BLE
@@ -802,18 +802,18 @@ status_t LSM303AGR_MAG_R_ST(LSM303AGR_MAG_ST_t *value)
 *******************************************************************************/
 status_t  LSM303AGR_MAG_W_BLE(LSM303AGR_MAG_BLE_t newValue)
 {
-    u8_t value;
+  u8_t value;
 
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_C, &value) )
-        return MEMS_ERROR;
+  if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_C, &value) )
+    return MEMS_ERROR;
 
-    value &= ~LSM303AGR_MAG_BLE_MASK;
-    value |= newValue;
+  value &= ~LSM303AGR_MAG_BLE_MASK; 
+  value |= newValue;
+  
+  if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_CFG_REG_C, value) )
+    return MEMS_ERROR;
 
-    if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_CFG_REG_C, value) )
-        return MEMS_ERROR;
-
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 
 /*******************************************************************************
@@ -826,12 +826,12 @@ status_t  LSM303AGR_MAG_W_BLE(LSM303AGR_MAG_BLE_t newValue)
 
 status_t LSM303AGR_MAG_R_BLE(LSM303AGR_MAG_BLE_t *value)
 {
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_C, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_C, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_BLE_MASK; //mask
+  *value &= LSM303AGR_MAG_BLE_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_W_BDU
@@ -842,18 +842,18 @@ status_t LSM303AGR_MAG_R_BLE(LSM303AGR_MAG_BLE_t *value)
 *******************************************************************************/
 status_t  LSM303AGR_MAG_W_BDU(LSM303AGR_MAG_BDU_t newValue)
 {
-    u8_t value;
+  u8_t value;
 
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_C, &value) )
-        return MEMS_ERROR;
+  if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_C, &value) )
+    return MEMS_ERROR;
 
-    value &= ~LSM303AGR_MAG_BDU_MASK;
-    value |= newValue;
+  value &= ~LSM303AGR_MAG_BDU_MASK; 
+  value |= newValue;
+  
+  if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_CFG_REG_C, value) )
+    return MEMS_ERROR;
 
-    if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_CFG_REG_C, value) )
-        return MEMS_ERROR;
-
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 
 /*******************************************************************************
@@ -866,12 +866,12 @@ status_t  LSM303AGR_MAG_W_BDU(LSM303AGR_MAG_BDU_t newValue)
 
 status_t LSM303AGR_MAG_R_BDU(LSM303AGR_MAG_BDU_t *value)
 {
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_C, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_C, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_BDU_MASK; //mask
+  *value &= LSM303AGR_MAG_BDU_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_W_I2C_DIS
@@ -882,18 +882,18 @@ status_t LSM303AGR_MAG_R_BDU(LSM303AGR_MAG_BDU_t *value)
 *******************************************************************************/
 status_t  LSM303AGR_MAG_W_I2C_DIS(LSM303AGR_MAG_I2C_DIS_t newValue)
 {
-    u8_t value;
+  u8_t value;
 
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_C, &value) )
-        return MEMS_ERROR;
+  if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_C, &value) )
+    return MEMS_ERROR;
 
-    value &= ~LSM303AGR_MAG_I2C_DIS_MASK;
-    value |= newValue;
+  value &= ~LSM303AGR_MAG_I2C_DIS_MASK; 
+  value |= newValue;
+  
+  if( !LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_CFG_REG_C, value) )
+    return MEMS_ERROR;
 
-    if( !LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_CFG_REG_C, value) )
-        return MEMS_ERROR;
-
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 
 /*******************************************************************************
@@ -906,12 +906,12 @@ status_t  LSM303AGR_MAG_W_I2C_DIS(LSM303AGR_MAG_I2C_DIS_t newValue)
 
 status_t LSM303AGR_MAG_R_I2C_DIS(LSM303AGR_MAG_I2C_DIS_t *value)
 {
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_C, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_C, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_I2C_DIS_MASK; //mask
+  *value &= LSM303AGR_MAG_I2C_DIS_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_W_INT_MAG_PIN
@@ -922,18 +922,18 @@ status_t LSM303AGR_MAG_R_I2C_DIS(LSM303AGR_MAG_I2C_DIS_t *value)
 *******************************************************************************/
 status_t  LSM303AGR_MAG_W_INT_MAG_PIN(LSM303AGR_MAG_INT_MAG_PIN_t newValue)
 {
-    u8_t value;
+  u8_t value;
 
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_C, &value) )
-        return MEMS_ERROR;
+  if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_C, &value) )
+    return MEMS_ERROR;
 
-    value &= ~LSM303AGR_MAG_INT_MAG_PIN_MASK;
-    value |= newValue;
+  value &= ~LSM303AGR_MAG_INT_MAG_PIN_MASK; 
+  value |= newValue;
+  
+  if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_CFG_REG_C, value) )
+    return MEMS_ERROR;
 
-    if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_CFG_REG_C, value) )
-        return MEMS_ERROR;
-
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 
 /*******************************************************************************
@@ -946,12 +946,12 @@ status_t  LSM303AGR_MAG_W_INT_MAG_PIN(LSM303AGR_MAG_INT_MAG_PIN_t newValue)
 
 status_t LSM303AGR_MAG_R_INT_MAG_PIN(LSM303AGR_MAG_INT_MAG_PIN_t *value)
 {
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_C, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_CFG_REG_C, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_INT_MAG_PIN_MASK; //mask
+  *value &= LSM303AGR_MAG_INT_MAG_PIN_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_W_IEN
@@ -962,18 +962,18 @@ status_t LSM303AGR_MAG_R_INT_MAG_PIN(LSM303AGR_MAG_INT_MAG_PIN_t *value)
 *******************************************************************************/
 status_t  LSM303AGR_MAG_W_IEN(LSM303AGR_MAG_IEN_t newValue)
 {
-    u8_t value;
+  u8_t value;
 
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_CTRL_REG, &value) )
-        return MEMS_ERROR;
+  if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_CTRL_REG, &value) )
+    return MEMS_ERROR;
 
-    value &= ~LSM303AGR_MAG_IEN_MASK;
-    value |= newValue;
+  value &= ~LSM303AGR_MAG_IEN_MASK; 
+  value |= newValue;
+  
+  if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_INT_CTRL_REG, value) )
+    return MEMS_ERROR;
 
-    if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_INT_CTRL_REG, value) )
-        return MEMS_ERROR;
-
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 
 /*******************************************************************************
@@ -986,12 +986,12 @@ status_t  LSM303AGR_MAG_W_IEN(LSM303AGR_MAG_IEN_t newValue)
 
 status_t LSM303AGR_MAG_R_IEN(LSM303AGR_MAG_IEN_t *value)
 {
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_CTRL_REG, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_CTRL_REG, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_IEN_MASK; //mask
+  *value &= LSM303AGR_MAG_IEN_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_W_IEL
@@ -1002,18 +1002,18 @@ status_t LSM303AGR_MAG_R_IEN(LSM303AGR_MAG_IEN_t *value)
 *******************************************************************************/
 status_t  LSM303AGR_MAG_W_IEL(LSM303AGR_MAG_IEL_t newValue)
 {
-    u8_t value;
+  u8_t value;
 
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_CTRL_REG, &value) )
-        return MEMS_ERROR;
+  if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_CTRL_REG, &value) )
+    return MEMS_ERROR;
 
-    value &= ~LSM303AGR_MAG_IEL_MASK;
-    value |= newValue;
+  value &= ~LSM303AGR_MAG_IEL_MASK; 
+  value |= newValue;
+  
+  if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_INT_CTRL_REG, value) )
+    return MEMS_ERROR;
 
-    if( HAL_OK !=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_INT_CTRL_REG, value) )
-        return MEMS_ERROR;
-
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 
 /*******************************************************************************
@@ -1026,12 +1026,12 @@ status_t  LSM303AGR_MAG_W_IEL(LSM303AGR_MAG_IEL_t newValue)
 
 status_t LSM303AGR_MAG_R_IEL(LSM303AGR_MAG_IEL_t *value)
 {
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_CTRL_REG, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_CTRL_REG, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_IEL_MASK; //mask
+  *value &= LSM303AGR_MAG_IEL_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_W_IEA
@@ -1042,18 +1042,18 @@ status_t LSM303AGR_MAG_R_IEL(LSM303AGR_MAG_IEL_t *value)
 *******************************************************************************/
 status_t  LSM303AGR_MAG_W_IEA(LSM303AGR_MAG_IEA_t newValue)
 {
-    u8_t value;
+  u8_t value;
 
-    if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_CTRL_REG, &value) )
-        return MEMS_ERROR;
+  if( HAL_OK !=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_CTRL_REG, &value) )
+    return MEMS_ERROR;
 
-    value &= ~LSM303AGR_MAG_IEA_MASK;
-    value |= newValue;
+  value &= ~LSM303AGR_MAG_IEA_MASK; 
+  value |= newValue;
+  
+  if( HAL_OK!=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_INT_CTRL_REG, value) )
+    return MEMS_ERROR;
 
-    if( HAL_OK!=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_INT_CTRL_REG, value) )
-        return MEMS_ERROR;
-
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 
 /*******************************************************************************
@@ -1066,12 +1066,12 @@ status_t  LSM303AGR_MAG_W_IEA(LSM303AGR_MAG_IEA_t newValue)
 
 status_t LSM303AGR_MAG_R_IEA(LSM303AGR_MAG_IEA_t *value)
 {
-    if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_CTRL_REG, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_CTRL_REG, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_IEA_MASK; //mask
+  *value &= LSM303AGR_MAG_IEA_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_W_ZIEN
@@ -1082,18 +1082,18 @@ status_t LSM303AGR_MAG_R_IEA(LSM303AGR_MAG_IEA_t *value)
 *******************************************************************************/
 status_t  LSM303AGR_MAG_W_ZIEN(LSM303AGR_MAG_ZIEN_t newValue)
 {
-    u8_t value;
+  u8_t value;
 
-    if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_CTRL_REG, &value) )
-        return MEMS_ERROR;
+  if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_CTRL_REG, &value) )
+    return MEMS_ERROR;
 
-    value &= ~LSM303AGR_MAG_ZIEN_MASK;
-    value |= newValue;
+  value &= ~LSM303AGR_MAG_ZIEN_MASK; 
+  value |= newValue;
+  
+  if( HAL_OK!=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_INT_CTRL_REG, value) )
+    return MEMS_ERROR;
 
-    if( HAL_OK!=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_INT_CTRL_REG, value) )
-        return MEMS_ERROR;
-
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 
 /*******************************************************************************
@@ -1106,12 +1106,12 @@ status_t  LSM303AGR_MAG_W_ZIEN(LSM303AGR_MAG_ZIEN_t newValue)
 
 status_t LSM303AGR_MAG_R_ZIEN(LSM303AGR_MAG_ZIEN_t *value)
 {
-    if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_CTRL_REG, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_CTRL_REG, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_ZIEN_MASK; //mask
+  *value &= LSM303AGR_MAG_ZIEN_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_W_YIEN
@@ -1122,18 +1122,18 @@ status_t LSM303AGR_MAG_R_ZIEN(LSM303AGR_MAG_ZIEN_t *value)
 *******************************************************************************/
 status_t  LSM303AGR_MAG_W_YIEN(LSM303AGR_MAG_YIEN_t newValue)
 {
-    u8_t value;
+  u8_t value;
 
-    if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_CTRL_REG, &value) )
-        return MEMS_ERROR;
+  if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_CTRL_REG, &value) )
+    return MEMS_ERROR;
 
-    value &= ~LSM303AGR_MAG_YIEN_MASK;
-    value |= newValue;
+  value &= ~LSM303AGR_MAG_YIEN_MASK; 
+  value |= newValue;
+  
+  if( HAL_OK!=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_INT_CTRL_REG, value) )
+    return MEMS_ERROR;
 
-    if( HAL_OK!=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_INT_CTRL_REG, value) )
-        return MEMS_ERROR;
-
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 
 /*******************************************************************************
@@ -1146,12 +1146,12 @@ status_t  LSM303AGR_MAG_W_YIEN(LSM303AGR_MAG_YIEN_t newValue)
 
 status_t LSM303AGR_MAG_R_YIEN(LSM303AGR_MAG_YIEN_t *value)
 {
-    if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_CTRL_REG, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_CTRL_REG, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_YIEN_MASK; //mask
+  *value &= LSM303AGR_MAG_YIEN_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_W_XIEN
@@ -1162,18 +1162,18 @@ status_t LSM303AGR_MAG_R_YIEN(LSM303AGR_MAG_YIEN_t *value)
 *******************************************************************************/
 status_t  LSM303AGR_MAG_W_XIEN(LSM303AGR_MAG_XIEN_t newValue)
 {
-    u8_t value;
+  u8_t value;
 
-    if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_CTRL_REG, &value) )
-        return MEMS_ERROR;
+  if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_CTRL_REG, &value) )
+    return MEMS_ERROR;
 
-    value &= ~LSM303AGR_MAG_XIEN_MASK;
-    value |= newValue;
+  value &= ~LSM303AGR_MAG_XIEN_MASK; 
+  value |= newValue;
+  
+  if( HAL_OK!=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_INT_CTRL_REG, value) )
+    return MEMS_ERROR;
 
-    if( HAL_OK!=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_INT_CTRL_REG, value) )
-        return MEMS_ERROR;
-
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 
 /*******************************************************************************
@@ -1186,12 +1186,12 @@ status_t  LSM303AGR_MAG_W_XIEN(LSM303AGR_MAG_XIEN_t newValue)
 
 status_t LSM303AGR_MAG_R_XIEN(LSM303AGR_MAG_XIEN_t *value)
 {
-    if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_CTRL_REG, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_CTRL_REG, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_XIEN_MASK; //mask
+  *value &= LSM303AGR_MAG_XIEN_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_R_INT
@@ -1203,12 +1203,12 @@ status_t LSM303AGR_MAG_R_XIEN(LSM303AGR_MAG_XIEN_t *value)
 
 status_t LSM303AGR_MAG_R_INT(LSM303AGR_MAG_INT_t *value)
 {
-    if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_SOURCE_REG, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_SOURCE_REG, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_INT_MASK; //mask
+  *value &= LSM303AGR_MAG_INT_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_R_MROI
@@ -1220,12 +1220,12 @@ status_t LSM303AGR_MAG_R_INT(LSM303AGR_MAG_INT_t *value)
 
 status_t LSM303AGR_MAG_R_MROI(LSM303AGR_MAG_MROI_t *value)
 {
-    if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_SOURCE_REG, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_SOURCE_REG, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_MROI_MASK; //mask
+  *value &= LSM303AGR_MAG_MROI_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_R_N_TH_S_Z
@@ -1237,12 +1237,12 @@ status_t LSM303AGR_MAG_R_MROI(LSM303AGR_MAG_MROI_t *value)
 
 status_t LSM303AGR_MAG_R_N_TH_S_Z(LSM303AGR_MAG_N_TH_S_Z_t *value)
 {
-    if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_SOURCE_REG, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_SOURCE_REG, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_N_TH_S_Z_MASK; //mask
+  *value &= LSM303AGR_MAG_N_TH_S_Z_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_R_N_TH_S_Y
@@ -1254,12 +1254,12 @@ status_t LSM303AGR_MAG_R_N_TH_S_Z(LSM303AGR_MAG_N_TH_S_Z_t *value)
 
 status_t LSM303AGR_MAG_R_N_TH_S_Y(LSM303AGR_MAG_N_TH_S_Y_t *value)
 {
-    if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_SOURCE_REG, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_SOURCE_REG, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_N_TH_S_Y_MASK; //mask
+  *value &= LSM303AGR_MAG_N_TH_S_Y_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_R_N_TH_S_X
@@ -1271,12 +1271,12 @@ status_t LSM303AGR_MAG_R_N_TH_S_Y(LSM303AGR_MAG_N_TH_S_Y_t *value)
 
 status_t LSM303AGR_MAG_R_N_TH_S_X(LSM303AGR_MAG_N_TH_S_X_t *value)
 {
-    if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_SOURCE_REG, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_SOURCE_REG, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_N_TH_S_X_MASK; //mask
+  *value &= LSM303AGR_MAG_N_TH_S_X_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_R_P_TH_S_Z
@@ -1288,12 +1288,12 @@ status_t LSM303AGR_MAG_R_N_TH_S_X(LSM303AGR_MAG_N_TH_S_X_t *value)
 
 status_t LSM303AGR_MAG_R_P_TH_S_Z(LSM303AGR_MAG_P_TH_S_Z_t *value)
 {
-    if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_SOURCE_REG, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_SOURCE_REG, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_P_TH_S_Z_MASK; //mask
+  *value &= LSM303AGR_MAG_P_TH_S_Z_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_R_P_TH_S_Y
@@ -1305,12 +1305,12 @@ status_t LSM303AGR_MAG_R_P_TH_S_Z(LSM303AGR_MAG_P_TH_S_Z_t *value)
 
 status_t LSM303AGR_MAG_R_P_TH_S_Y(LSM303AGR_MAG_P_TH_S_Y_t *value)
 {
-    if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_SOURCE_REG, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_SOURCE_REG, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_P_TH_S_Y_MASK; //mask
+  *value &= LSM303AGR_MAG_P_TH_S_Y_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_R_P_TH_S_X
@@ -1322,12 +1322,12 @@ status_t LSM303AGR_MAG_R_P_TH_S_Y(LSM303AGR_MAG_P_TH_S_Y_t *value)
 
 status_t LSM303AGR_MAG_R_P_TH_S_X(LSM303AGR_MAG_P_TH_S_X_t *value)
 {
-    if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_SOURCE_REG, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_SOURCE_REG, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_P_TH_S_X_MASK; //mask
+  *value &= LSM303AGR_MAG_P_TH_S_X_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 
 /*******************************************************************************
@@ -1340,12 +1340,12 @@ status_t LSM303AGR_MAG_R_P_TH_S_X(LSM303AGR_MAG_P_TH_S_X_t *value)
 
 status_t LSM303AGR_MAG_R_XDA(LSM303AGR_MAG_XDA_t *value)
 {
-    if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_STATUS_REG, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_STATUS_REG, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_XDA_MASK; //mask
+  *value &= LSM303AGR_MAG_XDA_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_R_YDA
@@ -1357,12 +1357,12 @@ status_t LSM303AGR_MAG_R_XDA(LSM303AGR_MAG_XDA_t *value)
 
 status_t LSM303AGR_MAG_R_YDA(LSM303AGR_MAG_YDA_t *value)
 {
-    if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_STATUS_REG, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_STATUS_REG, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_YDA_MASK; //mask
+  *value &= LSM303AGR_MAG_YDA_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_R_ZDA
@@ -1374,12 +1374,12 @@ status_t LSM303AGR_MAG_R_YDA(LSM303AGR_MAG_YDA_t *value)
 
 status_t LSM303AGR_MAG_R_ZDA(LSM303AGR_MAG_ZDA_t *value)
 {
-    if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_STATUS_REG, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_STATUS_REG, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_ZDA_MASK; //mask
+  *value &= LSM303AGR_MAG_ZDA_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_R_ZYXDA
@@ -1391,12 +1391,12 @@ status_t LSM303AGR_MAG_R_ZDA(LSM303AGR_MAG_ZDA_t *value)
 
 status_t LSM303AGR_MAG_R_ZYXDA(LSM303AGR_MAG_ZYXDA_t *value)
 {
-    if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_STATUS_REG, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_STATUS_REG, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_ZYXDA_MASK; //mask
+  *value &= LSM303AGR_MAG_ZYXDA_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_R_XOR
@@ -1408,12 +1408,12 @@ status_t LSM303AGR_MAG_R_ZYXDA(LSM303AGR_MAG_ZYXDA_t *value)
 
 status_t LSM303AGR_MAG_R_XOR(LSM303AGR_MAG_XOR_t *value)
 {
-    if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_STATUS_REG, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_STATUS_REG, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_XOR_MASK; //mask
+  *value &= LSM303AGR_MAG_XOR_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_R_YOR
@@ -1425,12 +1425,12 @@ status_t LSM303AGR_MAG_R_XOR(LSM303AGR_MAG_XOR_t *value)
 
 status_t LSM303AGR_MAG_R_YOR(LSM303AGR_MAG_YOR_t *value)
 {
-    if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_STATUS_REG, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_STATUS_REG, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_YOR_MASK; //mask
+  *value &= LSM303AGR_MAG_YOR_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_R_ZOR
@@ -1442,12 +1442,12 @@ status_t LSM303AGR_MAG_R_YOR(LSM303AGR_MAG_YOR_t *value)
 
 status_t LSM303AGR_MAG_R_ZOR(LSM303AGR_MAG_ZOR_t *value)
 {
-    if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_STATUS_REG, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_STATUS_REG, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_ZOR_MASK; //mask
+  *value &= LSM303AGR_MAG_ZOR_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : LSM303AGR_MAG_R_ZYXOR
@@ -1459,12 +1459,12 @@ status_t LSM303AGR_MAG_R_ZOR(LSM303AGR_MAG_ZOR_t *value)
 
 status_t LSM303AGR_MAG_R_ZYXOR(LSM303AGR_MAG_ZYXOR_t *value)
 {
-    if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_STATUS_REG, (u8_t *)value) )
-        return MEMS_ERROR;
+ if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_STATUS_REG, (u8_t *)value) )
+    return MEMS_ERROR;
 
-    *value &= LSM303AGR_MAG_ZYXOR_MASK; //mask
+  *value &= LSM303AGR_MAG_ZYXOR_MASK; //mask
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 /*******************************************************************************
 * Function Name  : status_t LSM303AGR_MAG_Get_Raw_Magnetic(u8_t *buff)
@@ -1473,42 +1473,42 @@ status_t LSM303AGR_MAG_R_ZYXOR(LSM303AGR_MAG_ZYXOR_t *value)
 * Output         : Magnetic buffer u8_t
 * Return         : Status [MEMS_ERROR, MEMS_SUCCESS]
 *******************************************************************************/
-status_t LSM303AGR_MAG_Get_Raw_Magnetic(u8_t *buff)
+status_t LSM303AGR_MAG_Get_Raw_Magnetic(u8_t *buff) 
 {
-    u8_t i, j, k;
-    u8_t numberOfByteForDimension;
+  u8_t i, j, k;
+  u8_t numberOfByteForDimension;
+  
+  numberOfByteForDimension=6/3;
 
-    numberOfByteForDimension=6/3;
+  k=0;
+  for (i=0; i<3;i++ ) 
+  {
+	for (j=0; j<numberOfByteForDimension;j++ )
+	{	
+		if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_OUTX_L_REG+k, &buff[k]))
+		  return MEMS_ERROR;
+		k++;	
+	}
+  }
 
-    k=0;
-    for (i=0; i<3; i++ )
-    {
-        for (j=0; j<numberOfByteForDimension; j++ )
-        {
-            if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_OUTX_L_REG+k, &buff[k]))
-                return MEMS_ERROR;
-            k++;
-        }
-    }
-
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS; 
 }
 
 #define LSM303AGR_MAG_SENSITIVITY	15/10
 
 status_t LSM303AGR_MAG_Get_Magnetic(int *buff)
 {
-    Type3Axis16bit_U raw_data_tmp;
+  Type3Axis16bit_U raw_data_tmp;
 
-    /* Read out raw magnetometer samples */
-    LSM303AGR_MAG_Get_Raw_Magnetic(raw_data_tmp.u8bit);
+  /* Read out raw magnetometer samples */
+  LSM303AGR_MAG_Get_Raw_Magnetic(raw_data_tmp.u8bit);
 
-    /* Applysensitivity */
-    buff[0] = raw_data_tmp.i16bit[0] * LSM303AGR_MAG_SENSITIVITY;
-    buff[1] = raw_data_tmp.i16bit[1] * LSM303AGR_MAG_SENSITIVITY;
-    buff[2] = raw_data_tmp.i16bit[2] * LSM303AGR_MAG_SENSITIVITY;
+  /* Applysensitivity */
+  buff[0] = raw_data_tmp.i16bit[0] * LSM303AGR_MAG_SENSITIVITY;
+  buff[1] = raw_data_tmp.i16bit[1] * LSM303AGR_MAG_SENSITIVITY;
+  buff[2] = raw_data_tmp.i16bit[2] * LSM303AGR_MAG_SENSITIVITY;
 
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS;
 }
 
 /*******************************************************************************
@@ -1518,25 +1518,25 @@ status_t LSM303AGR_MAG_Get_Magnetic(int *buff)
 * Output         : IntThreshld buffer u8_t
 * Return         : Status [MEMS_ERROR, MEMS_SUCCESS]
 *******************************************************************************/
-status_t LSM303AGR_MAG_Get_IntThreshld(u8_t *buff)
+status_t LSM303AGR_MAG_Get_IntThreshld(u8_t *buff) 
 {
-    u8_t i, j, k;
-    u8_t numberOfByteForDimension;
+  u8_t i, j, k;
+  u8_t numberOfByteForDimension;
+  
+  numberOfByteForDimension=2/1;
 
-    numberOfByteForDimension=2/1;
+  k=0;
+  for (i=0; i<1;i++ ) 
+  {
+	for (j=0; j<numberOfByteForDimension;j++ )
+	{	
+		if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_THS_L_REG+k, &buff[k]))
+		  return MEMS_ERROR;
+		k++;	
+	}
+  }
 
-    k=0;
-    for (i=0; i<1; i++ )
-    {
-        for (j=0; j<numberOfByteForDimension; j++ )
-        {
-            if( HAL_OK!=LSM303AGR_MAG_ReadReg(LSM303AGR_MAG_INT_THS_L_REG+k, &buff[k]))
-                return MEMS_ERROR;
-            k++;
-        }
-    }
-
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS; 
 }
 
 /*******************************************************************************
@@ -1546,23 +1546,23 @@ status_t LSM303AGR_MAG_Get_IntThreshld(u8_t *buff)
 * Output         : IntThreshld buffer u8_t
 * Return         : Status [MEMS_ERROR, MEMS_SUCCESS]
 *******************************************************************************/
-status_t LSM303AGR_MAG_Set_IntThreshld(u8_t *buff)
+status_t LSM303AGR_MAG_Set_IntThreshld(u8_t *buff) 
 {
-    u8_t i, j, k;
-    u8_t numberOfByteForDimension;
+  u8_t i, j, k;
+  u8_t numberOfByteForDimension;
+  
+  numberOfByteForDimension=2/1;
 
-    numberOfByteForDimension=2/1;
+  k=0;
+  for (i=0; i<1;i++ ) 
+  {
+	for (j=0; j<numberOfByteForDimension;j++ )
+	{	
+		if( HAL_OK!=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_INT_THS_L_REG+k, buff[k]))
+		  return MEMS_ERROR;
+		k++;	
+	}
+  }
 
-    k=0;
-    for (i=0; i<1; i++ )
-    {
-        for (j=0; j<numberOfByteForDimension; j++ )
-        {
-            if( HAL_OK!=LSM303AGR_MAG_WriteReg(LSM303AGR_MAG_INT_THS_L_REG+k, buff[k]))
-                return MEMS_ERROR;
-            k++;
-        }
-    }
-
-    return MEMS_SUCCESS;
+  return MEMS_SUCCESS; 
 }

@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * @file    bluenrg_interface.h
+  * @file    bluenrg_interface.h 
   * @author  MCD Application Team
   * @version V1.0.0
   * @date    04-July-2014
@@ -52,7 +52,7 @@ extern SPI_HandleTypeDef SpiHandle;
  */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
-    HCI_Isr();
+  HCI_Isr();
 }
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

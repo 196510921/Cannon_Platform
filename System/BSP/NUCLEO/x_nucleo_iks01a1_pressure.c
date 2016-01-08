@@ -81,125 +81,125 @@ static uint8_t pressure_sensor_type = 1; /* 1 activates LPS25HB, 0 activates LPS
  */
 PRESSURE_StatusTypeDef BSP_PRESSURE_Init(void)
 {
-  uint8_t p_id = 0;
-  PRESSURE_InitTypeDef InitStructure;
-  int done = 0;
-  
-  if(!PressureInitialized)
-  {
-    do
+    uint8_t p_id = 0;
+    PRESSURE_InitTypeDef InitStructure;
+    int done = 0;
+
+    if(!PressureInitialized)
     {
-      switch(pressure_sensor_type)
-      {
-        case 1:
+        do
         {
-          /* Initialize the pressure driver structure */
-          PressureDrv = &LPS25HBDrv;
-          
-          /* Configure sensor */
-          InitStructure.OutputDataRate = LPS25HB_ODR_1Hz;
-          InitStructure.BlockDataUpdate = LPS25HB_BDU_CONT;
-          InitStructure.DiffEnable = LPS25HB_DIFF_ENABLE;
-          InitStructure.SPIMode = LPS25HB_SPI_SIM_3W;
-          InitStructure.PressureResolution = LPS25HB_P_RES_AVG_32;
-          InitStructure.TemperatureResolution = LPS25HB_T_RES_AVG_16;
-          
-          /* Pressure sensor init */
-          if ( PressureDrv->Init == NULL )
-          {
-            PressureDrv = NULL;
-            pressure_sensor_type--;
-            break;
-          }
-          
-          if(PressureDrv->Init(&InitStructure) != PRESSURE_OK)
-          {
-            PressureDrv = NULL;
-            pressure_sensor_type--;
-            break;
-          }
-          
-          if ( PressureDrv->ReadID == NULL )
-          {
-            PressureDrv = NULL;
-            pressure_sensor_type--;
-            break;
-          }
-          
-          if(PressureDrv->ReadID(&p_id) != PRESSURE_OK)
-          {
-            PressureDrv = NULL;
-            pressure_sensor_type--;
-            break;
-          }
-          
-          if(p_id == I_AM_LPS25HB)
-          {
-            PressureDrv->extData = (PRESSURE_DrvExtTypeDef *)&LPS25HBDrv_ext;
-            PressureInitialized = 1;
-            done = 1;
-            break;
-          }
-          else
-          {
-            PressureDrv = NULL;
-            pressure_sensor_type--;
-            break;
-          }
+            switch(pressure_sensor_type)
+            {
+            case 1:
+            {
+                /* Initialize the pressure driver structure */
+                PressureDrv = &LPS25HBDrv;
+
+                /* Configure sensor */
+                InitStructure.OutputDataRate = LPS25HB_ODR_1Hz;
+                InitStructure.BlockDataUpdate = LPS25HB_BDU_CONT;
+                InitStructure.DiffEnable = LPS25HB_DIFF_ENABLE;
+                InitStructure.SPIMode = LPS25HB_SPI_SIM_3W;
+                InitStructure.PressureResolution = LPS25HB_P_RES_AVG_32;
+                InitStructure.TemperatureResolution = LPS25HB_T_RES_AVG_16;
+
+                /* Pressure sensor init */
+                if ( PressureDrv->Init == NULL )
+                {
+                    PressureDrv = NULL;
+                    pressure_sensor_type--;
+                    break;
+                }
+
+                if(PressureDrv->Init(&InitStructure) != PRESSURE_OK)
+                {
+                    PressureDrv = NULL;
+                    pressure_sensor_type--;
+                    break;
+                }
+
+                if ( PressureDrv->ReadID == NULL )
+                {
+                    PressureDrv = NULL;
+                    pressure_sensor_type--;
+                    break;
+                }
+
+                if(PressureDrv->ReadID(&p_id) != PRESSURE_OK)
+                {
+                    PressureDrv = NULL;
+                    pressure_sensor_type--;
+                    break;
+                }
+
+                if(p_id == I_AM_LPS25HB)
+                {
+                    PressureDrv->extData = (PRESSURE_DrvExtTypeDef *)&LPS25HBDrv_ext;
+                    PressureInitialized = 1;
+                    done = 1;
+                    break;
+                }
+                else
+                {
+                    PressureDrv = NULL;
+                    pressure_sensor_type--;
+                    break;
+                }
+            }
+            case 0:
+            default:
+            {
+                /* Initialize the pressure driver structure */
+                PressureDrv = &LPS25HDrv;
+
+                /* Configure sensor */
+                InitStructure.OutputDataRate = LPS25H_ODR_1Hz;
+                InitStructure.BlockDataUpdate = LPS25H_BDU_CONT;
+                InitStructure.DiffEnable = LPS25H_DIFF_ENABLE;
+                InitStructure.SPIMode = LPS25H_SPI_SIM_3W;
+                InitStructure.PressureResolution = LPS25H_P_RES_AVG_32;
+                InitStructure.TemperatureResolution = LPS25H_T_RES_AVG_16;
+
+                /* Pressure sensor init */
+                if ( PressureDrv->Init == NULL )
+                {
+                    PressureDrv = NULL;
+                    return PRESSURE_ERROR;
+                }
+
+                if(PressureDrv->Init(&InitStructure) != PRESSURE_OK)
+                {
+                    PressureDrv = NULL;
+                    return PRESSURE_ERROR;
+                }
+
+                if ( PressureDrv->ReadID == NULL )
+                {
+                    PressureDrv = NULL;
+                    return PRESSURE_ERROR;
+                }
+
+                if(PressureDrv->ReadID(&p_id) != PRESSURE_OK)
+                {
+                    PressureDrv = NULL;
+                    return PRESSURE_ERROR;
+                }
+
+                if(p_id == I_AM_LPS25H)
+                {
+                    PressureDrv->extData = (PRESSURE_DrvExtTypeDef *)&LPS25HDrv_ext;
+                    PressureInitialized = 1;
+                    done = 1;
+                    break;
+                }
+            }
+            }
         }
-        case 0:
-        default:
-        {
-          /* Initialize the pressure driver structure */
-          PressureDrv = &LPS25HDrv;
-          
-          /* Configure sensor */
-          InitStructure.OutputDataRate = LPS25H_ODR_1Hz;
-          InitStructure.BlockDataUpdate = LPS25H_BDU_CONT;
-          InitStructure.DiffEnable = LPS25H_DIFF_ENABLE;
-          InitStructure.SPIMode = LPS25H_SPI_SIM_3W;
-          InitStructure.PressureResolution = LPS25H_P_RES_AVG_32;
-          InitStructure.TemperatureResolution = LPS25H_T_RES_AVG_16;
-          
-          /* Pressure sensor init */
-          if ( PressureDrv->Init == NULL )
-          {
-            PressureDrv = NULL;
-            return PRESSURE_ERROR;
-          }
-          
-          if(PressureDrv->Init(&InitStructure) != PRESSURE_OK)
-          {
-            PressureDrv = NULL;
-            return PRESSURE_ERROR;
-          }
-          
-          if ( PressureDrv->ReadID == NULL )
-          {
-            PressureDrv = NULL;
-            return PRESSURE_ERROR;
-          }
-          
-          if(PressureDrv->ReadID(&p_id) != PRESSURE_OK)
-          {
-            PressureDrv = NULL;
-            return PRESSURE_ERROR;
-          }
-          
-          if(p_id == I_AM_LPS25H)
-          {
-            PressureDrv->extData = (PRESSURE_DrvExtTypeDef *)&LPS25HDrv_ext;
-            PressureInitialized = 1;
-            done = 1;
-            break;
-          }
-        }
-      }
+        while(!done);
     }
-    while(!done);
-  }
-  
-  return PRESSURE_OK;
+
+    return PRESSURE_OK;
 }
 
 /**
@@ -208,7 +208,7 @@ PRESSURE_StatusTypeDef BSP_PRESSURE_Init(void)
  */
 uint8_t BSP_PRESSURE_isInitialized(void)
 {
-  return PressureInitialized;
+    return PressureInitialized;
 }
 
 /**
@@ -218,12 +218,12 @@ uint8_t BSP_PRESSURE_isInitialized(void)
  */
 PRESSURE_StatusTypeDef BSP_PRESSURE_ReadID(uint8_t *p_id)
 {
-  if ( PressureDrv->ReadID == NULL )
-  {
-    return PRESSURE_ERROR;
-  }
-  
-  return PressureDrv->ReadID(p_id);
+    if ( PressureDrv->ReadID == NULL )
+    {
+        return PRESSURE_ERROR;
+    }
+
+    return PressureDrv->ReadID(p_id);
 }
 
 
@@ -233,39 +233,39 @@ PRESSURE_StatusTypeDef BSP_PRESSURE_ReadID(uint8_t *p_id)
  */
 PRESSURE_StatusTypeDef BSP_PRESSURE_CheckID(void)
 {
-  uint8_t p_id;
-  
-  if(BSP_PRESSURE_ReadID(&p_id) != PRESSURE_OK)
-  {
-    return PRESSURE_ERROR;
-  }
-  
-  switch(pressure_sensor_type)
-  {
+    uint8_t p_id;
+
+    if(BSP_PRESSURE_ReadID(&p_id) != PRESSURE_OK)
+    {
+        return PRESSURE_ERROR;
+    }
+
+    switch(pressure_sensor_type)
+    {
     case 1:
     {
-      if(p_id == I_AM_LPS25HB)
-      {
-        return PRESSURE_OK;
-      }
-      else
-      {
-        return PRESSURE_ERROR;
-      }
+        if(p_id == I_AM_LPS25HB)
+        {
+            return PRESSURE_OK;
+        }
+        else
+        {
+            return PRESSURE_ERROR;
+        }
     }
     case 0:
     default:
     {
-      if(p_id == I_AM_LPS25H)
-      {
-        return PRESSURE_OK;
-      }
-      else
-      {
-        return PRESSURE_ERROR;
-      }
+        if(p_id == I_AM_LPS25H)
+        {
+            return PRESSURE_OK;
+        }
+        else
+        {
+            return PRESSURE_ERROR;
+        }
     }
-  }
+    }
 }
 
 
@@ -275,12 +275,12 @@ PRESSURE_StatusTypeDef BSP_PRESSURE_CheckID(void)
  */
 PRESSURE_StatusTypeDef BSP_PRESSURE_Reset(void)
 {
-  if ( PressureDrv->Reset == NULL )
-  {
-    return PRESSURE_ERROR;
-  }
-  
-  return PressureDrv->Reset();
+    if ( PressureDrv->Reset == NULL )
+    {
+        return PRESSURE_ERROR;
+    }
+
+    return PressureDrv->Reset();
 }
 
 
@@ -291,12 +291,12 @@ PRESSURE_StatusTypeDef BSP_PRESSURE_Reset(void)
  */
 PRESSURE_StatusTypeDef BSP_PRESSURE_GetPressure(float* pfData)
 {
-  if ( PressureDrv->GetPressure == NULL )
-  {
-    return PRESSURE_ERROR;
-  }
-  
-  return PressureDrv->GetPressure(pfData);
+    if ( PressureDrv->GetPressure == NULL )
+    {
+        return PRESSURE_ERROR;
+    }
+
+    return PressureDrv->GetPressure(pfData);
 }
 
 /**
@@ -306,12 +306,12 @@ PRESSURE_StatusTypeDef BSP_PRESSURE_GetPressure(float* pfData)
  */
 PRESSURE_StatusTypeDef BSP_PRESSURE_GetTemperature(float* pfData)
 {
-  if ( PressureDrv->GetTemperature == NULL )
-  {
-    return PRESSURE_ERROR;
-  }
-  
-  return PressureDrv->GetTemperature(pfData);
+    if ( PressureDrv->GetTemperature == NULL )
+    {
+        return PRESSURE_ERROR;
+    }
+
+    return PressureDrv->GetTemperature(pfData);
 }
 
 /**
@@ -320,22 +320,22 @@ PRESSURE_StatusTypeDef BSP_PRESSURE_GetTemperature(float* pfData)
  */
 PRESSURE_ComponentTypeDef BSP_PRESSURE_GetComponentType( void )
 {
-  if( PressureDrv == NULL )
-  {
+    if( PressureDrv == NULL )
+    {
+        return PRESSURE_NONE_COMPONENT;
+    }
+
+    if( PressureDrv == &LPS25HDrv )
+    {
+        return PRESSURE_LPS25H_COMPONENT;
+    }
+
+    if( PressureDrv == &LPS25HBDrv )
+    {
+        return PRESSURE_LPS25HB_DIL24_COMPONENT;
+    }
+
     return PRESSURE_NONE_COMPONENT;
-  }
-  
-  if( PressureDrv == &LPS25HDrv )
-  {
-    return PRESSURE_LPS25H_COMPONENT;
-  }
-  
-  if( PressureDrv == &LPS25HBDrv )
-  {
-    return PRESSURE_LPS25HB_DIL24_COMPONENT;
-  }
-  
-  return PRESSURE_NONE_COMPONENT;
 }
 
 /**

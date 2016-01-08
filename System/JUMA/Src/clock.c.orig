@@ -1,13 +1,12 @@
 /**
-  ******************************************************************************
-  * @file    bluenrg_interface.h
-  * @author  MCD Application Team
-  * @version V1.0.0
-  * @date    04-July-2014
-  * @brief   This file provides code for the BlueNRG Expansion Board driver
-  *          based on STM32Cube HAL for STM32 Nucleo boards.
-  ******************************************************************************
-  * @attention
+******************************************************************************
+* @file    clock.c 
+* @author  CL
+* @version V1.0.0
+* @date    04-July-2014
+* @brief   
+******************************************************************************
+* @attention
   *
   * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
   *
@@ -35,24 +34,43 @@
   *
   ******************************************************************************
   */
+  
 /* Includes ------------------------------------------------------------------*/
-#include "bluenrg_interface.h"
+#include "clock.h"
+#include "cube_hal.h"
 
-#include "debug.h"
-#include "ble_status.h"
-#include "hci.h"
-#include "stm32_bluenrg_ble.h"
-
-extern SPI_HandleTypeDef SpiHandle;
+const uint32_t CLOCK_SECOND = 1000;
 
 /**
- * @brief  EXTI line detection callback.
- * @param  Specifies the pins connected EXTI line
+ * @brief  Clock_Init
+ * @param  None
  * @retval None
  */
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+void Clock_Init(void)
 {
-    HCI_Isr();
+  // FIXME: as long as Cube HAL is initialized this is OK
+  // Cube HAL default is one clock each 1 ms
+}
+
+/**
+ * @brief  Clock_Time
+ * @param  None
+ * @retval tClockTime
+ */
+tClockTime Clock_Time(void)
+{
+  return HAL_GetTick();
+}
+
+/**
+ * @brief  Clock_Wait Wait for a multiple of 1 ms.
+ * @param  int i
+ * @retval None
+ */
+void Clock_Wait(uint32_t i)
+{
+  HAL_Delay(i);
 }
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+

@@ -1,10 +1,10 @@
 /**
 ******************************************************************************
-* @file    clock.c 
+* @file    clock.c
 * @author  CL
 * @version V1.0.0
 * @date    04-July-2014
-* @brief   
+* @brief
 ******************************************************************************
 * @attention
   *
@@ -34,7 +34,7 @@
   *
   ******************************************************************************
   */
-  
+
 /* Includes ------------------------------------------------------------------*/
 #include "clock.h"
 #include "cube_hal.h"
@@ -48,8 +48,8 @@ const uint32_t CLOCK_SECOND = 1000;
  */
 void Clock_Init(void)
 {
-  // FIXME: as long as Cube HAL is initialized this is OK
-  // Cube HAL default is one clock each 1 ms
+    // FIXME: as long as Cube HAL is initialized this is OK
+    // Cube HAL default is one clock each 1 ms
 }
 
 /**
@@ -59,7 +59,7 @@ void Clock_Init(void)
  */
 tClockTime Clock_Time(void)
 {
-  return HAL_GetTick();
+    return HAL_GetTick();
 }
 
 /**
@@ -69,7 +69,7 @@ tClockTime Clock_Time(void)
  */
 void Clock_Wait(uint32_t i)
 {
-  HAL_Delay(i);
+    HAL_Delay(i);
 }
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

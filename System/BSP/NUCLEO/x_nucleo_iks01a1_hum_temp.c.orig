@@ -83,50 +83,50 @@ static uint8_t HumTempInitialized = 0;
  */
 HUM_TEMP_StatusTypeDef    BSP_HUM_TEMP_Init(void)
 {
-    uint8_t ht_id = 0;
-    HUM_TEMP_InitTypeDef InitStructure;
-
-    if(!HumTempInitialized)
+  uint8_t ht_id = 0;
+  HUM_TEMP_InitTypeDef InitStructure;
+  
+  if(!HumTempInitialized)
+  {
+    /* Initialize the hum_temp driver structure */
+    Hum_tempDrv = &Hts221Drv;
+    
+    /* Configure sensor */
+    InitStructure.OutputDataRate = HTS221_ODR_12_5Hz;
+    
+    /* Hts221 Init */
+    if ( Hum_tempDrv->Init == NULL )
     {
-        /* Initialize the hum_temp driver structure */
-        Hum_tempDrv = &Hts221Drv;
-
-        /* Configure sensor */
-        InitStructure.OutputDataRate = HTS221_ODR_12_5Hz;
-
-        /* Hts221 Init */
-        if ( Hum_tempDrv->Init == NULL )
-        {
-            Hum_tempDrv = NULL;
-            return HUM_TEMP_ERROR;
-        }
-
-        if(Hum_tempDrv->Init(&InitStructure) != HUM_TEMP_OK)
-        {
-            Hum_tempDrv = NULL;
-            return HUM_TEMP_ERROR;
-        }
-
-        if ( Hum_tempDrv->ReadID == NULL )
-        {
-            Hum_tempDrv = NULL;
-            return HUM_TEMP_ERROR;
-        }
-
-        if(Hum_tempDrv->ReadID(&ht_id) != HUM_TEMP_OK)
-        {
-            Hum_tempDrv = NULL;
-            return HUM_TEMP_ERROR;
-        }
-
-        if(ht_id == I_AM_HTS221)
-        {
-            Hum_tempDrv->extData = (HUM_TEMP_DrvExtTypeDef *)&Hts221Drv_ext;
-            HumTempInitialized = 1;
-        }
+      Hum_tempDrv = NULL;
+      return HUM_TEMP_ERROR;
     }
-
-    return HUM_TEMP_OK;
+    
+    if(Hum_tempDrv->Init(&InitStructure) != HUM_TEMP_OK)
+    {
+      Hum_tempDrv = NULL;
+      return HUM_TEMP_ERROR;
+    }
+    
+    if ( Hum_tempDrv->ReadID == NULL )
+    {
+      Hum_tempDrv = NULL;
+      return HUM_TEMP_ERROR;
+    }
+    
+    if(Hum_tempDrv->ReadID(&ht_id) != HUM_TEMP_OK)
+    {
+      Hum_tempDrv = NULL;
+      return HUM_TEMP_ERROR;
+    }
+    
+    if(ht_id == I_AM_HTS221)
+    {
+      Hum_tempDrv->extData = (HUM_TEMP_DrvExtTypeDef *)&Hts221Drv_ext;
+      HumTempInitialized = 1;
+    }
+  }
+  
+  return HUM_TEMP_OK;
 }
 
 /**
@@ -135,7 +135,7 @@ HUM_TEMP_StatusTypeDef    BSP_HUM_TEMP_Init(void)
  */
 uint8_t BSP_HUM_TEMP_isInitialized(void)
 {
-    return HumTempInitialized;
+  return HumTempInitialized;
 }
 
 /**
@@ -145,12 +145,12 @@ uint8_t BSP_HUM_TEMP_isInitialized(void)
  */
 HUM_TEMP_StatusTypeDef    BSP_HUM_TEMP_ReadID(uint8_t *ht_id)
 {
-    if ( Hum_tempDrv->ReadID == NULL )
-    {
-        return HUM_TEMP_ERROR;
-    }
-
-    return Hum_tempDrv->ReadID(ht_id);
+  if ( Hum_tempDrv->ReadID == NULL )
+  {
+    return HUM_TEMP_ERROR;
+  }
+  
+  return Hum_tempDrv->ReadID(ht_id);
 }
 
 
@@ -160,21 +160,21 @@ HUM_TEMP_StatusTypeDef    BSP_HUM_TEMP_ReadID(uint8_t *ht_id)
  */
 HUM_TEMP_StatusTypeDef BSP_HUM_TEMP_CheckID(void)
 {
-    uint8_t ht_id;
-
-    if(BSP_HUM_TEMP_ReadID(&ht_id) != HUM_TEMP_OK)
-    {
-        return HUM_TEMP_ERROR;
-    }
-
-    if(ht_id == I_AM_HTS221)
-    {
-        return HUM_TEMP_OK;
-    }
-    else
-    {
-        return HUM_TEMP_ERROR;
-    }
+  uint8_t ht_id;
+  
+  if(BSP_HUM_TEMP_ReadID(&ht_id) != HUM_TEMP_OK)
+  {
+    return HUM_TEMP_ERROR;
+  }
+  
+  if(ht_id == I_AM_HTS221)
+  {
+    return HUM_TEMP_OK;
+  }
+  else
+  {
+    return HUM_TEMP_ERROR;
+  }
 }
 
 
@@ -184,12 +184,12 @@ HUM_TEMP_StatusTypeDef BSP_HUM_TEMP_CheckID(void)
  */
 HUM_TEMP_StatusTypeDef BSP_HUM_TEMP_Reset(void)
 {
-    if ( Hum_tempDrv->Reset == NULL )
-    {
-        return HUM_TEMP_ERROR;
-    }
-
-    return Hum_tempDrv->Reset();
+  if ( Hum_tempDrv->Reset == NULL )
+  {
+    return HUM_TEMP_ERROR;
+  }
+  
+  return Hum_tempDrv->Reset();
 }
 
 
@@ -199,12 +199,12 @@ HUM_TEMP_StatusTypeDef BSP_HUM_TEMP_Reset(void)
  */
 HUM_TEMP_StatusTypeDef BSP_HUM_TEMP_PowerOFF()
 {
-    if ( Hum_tempDrv->PowerOFF == NULL )
-    {
-        return HUM_TEMP_ERROR;
-    }
-
-    return Hum_tempDrv->PowerOFF();
+  if ( Hum_tempDrv->PowerOFF == NULL )
+  {
+    return HUM_TEMP_ERROR;
+  }
+  
+  return Hum_tempDrv->PowerOFF();
 }
 
 
@@ -215,12 +215,12 @@ HUM_TEMP_StatusTypeDef BSP_HUM_TEMP_PowerOFF()
  */
 HUM_TEMP_StatusTypeDef BSP_HUM_TEMP_GetHumidity(float* pfData)
 {
-    if ( Hum_tempDrv->GetHumidity == NULL )
-    {
-        return HUM_TEMP_ERROR;
-    }
-
-    return Hum_tempDrv->GetHumidity(pfData);
+  if ( Hum_tempDrv->GetHumidity == NULL )
+  {
+    return HUM_TEMP_ERROR;
+  }
+  
+  return Hum_tempDrv->GetHumidity(pfData);
 }
 
 /**
@@ -230,12 +230,12 @@ HUM_TEMP_StatusTypeDef BSP_HUM_TEMP_GetHumidity(float* pfData)
  */
 HUM_TEMP_StatusTypeDef BSP_HUM_TEMP_GetTemperature(float* pfData)
 {
-    if ( Hum_tempDrv->GetTemperature == NULL )
-    {
-        return HUM_TEMP_ERROR;
-    }
-
-    return Hum_tempDrv->GetTemperature(pfData);
+  if ( Hum_tempDrv->GetTemperature == NULL )
+  {
+    return HUM_TEMP_ERROR;
+  }
+  
+  return Hum_tempDrv->GetTemperature(pfData);
 }
 
 /**
@@ -244,17 +244,17 @@ HUM_TEMP_StatusTypeDef BSP_HUM_TEMP_GetTemperature(float* pfData)
  */
 HUM_TEMP_ComponentTypeDef BSP_HUM_TEMP_GetComponentType( void )
 {
-    if( Hum_tempDrv == NULL )
-    {
-        return HUM_TEMP_NONE_COMPONENT;
-    }
-
-    if( Hum_tempDrv == &Hts221Drv )
-    {
-        return HUM_TEMP_HTS221_COMPONENT;
-    }
-
+  if( Hum_tempDrv == NULL )
+  {
     return HUM_TEMP_NONE_COMPONENT;
+  }
+  
+  if( Hum_tempDrv == &Hts221Drv )
+  {
+    return HUM_TEMP_HTS221_COMPONENT;
+  }
+  
+  return HUM_TEMP_NONE_COMPONENT;
 }
 
 /**

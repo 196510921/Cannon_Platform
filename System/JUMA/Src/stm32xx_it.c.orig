@@ -1,11 +1,11 @@
 /**
   ******************************************************************************
-  * @file    stm32xx_it.c
+  * @file    stm32xx_it.c 
   * @author  CL
   * @version V1.0.0
   * @date    04-July-2014
   * @brief   Main Interrupt Service Routines.
-  *          This file provides template for all exceptions handler and
+  *          This file provides template for all exceptions handler and 
   *          peripherals interrupt service routine.
   ******************************************************************************
   * @attention
@@ -50,8 +50,8 @@ extern RTC_HandleTypeDef RTCHandle;
 /** @addtogroup SensorDemo
  *  @{
  */
-
-/** @defgroup INTERRUPT_HANDLER
+ 
+/** @defgroup INTERRUPT_HANDLER 
  * @{
  */
 
@@ -86,10 +86,10 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-    /* Go to infinite loop when Hard Fault exception occurs */
-    while (1)
-    {
-    }
+  /* Go to infinite loop when Hard Fault exception occurs */
+  while (1)
+  {
+  }
 }
 
 /**
@@ -126,9 +126,9 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
-    HAL_IncTick();
-
-    ms_counter++;
+  HAL_IncTick();
+  
+  ms_counter++;
 }
 
 
@@ -146,7 +146,7 @@ void SysTick_Handler(void)
   */
 void BNRG_SPI_EXTI_IRQHandler(void)
 {
-    HAL_GPIO_EXTI_IRQHandler(BNRG_SPI_EXTI_PIN);
+  HAL_GPIO_EXTI_IRQHandler(BNRG_SPI_EXTI_PIN);
 }
 
 
@@ -157,9 +157,9 @@ void BNRG_SPI_EXTI_IRQHandler(void)
   */
 void PUSH_BUTTON_EXTI_IRQHandler(void)
 {
-    HAL_GPIO_EXTI_IRQHandler(KEY_BUTTON_PIN);
-
-    button_event = 1;
+  HAL_GPIO_EXTI_IRQHandler(KEY_BUTTON_PIN);
+  
+  button_event = 1;
 }
 
 /**
@@ -169,7 +169,7 @@ void PUSH_BUTTON_EXTI_IRQHandler(void)
   */
 void RTC_WKUP_IRQHandler(void)
 {
-    HAL_RTCEx_WakeUpTimerIRQHandler(&RTCHandle);
+  HAL_RTCEx_WakeUpTimerIRQHandler(&RTCHandle);
 }
 
 /**
@@ -179,7 +179,7 @@ void RTC_WKUP_IRQHandler(void)
   */
 void RTC_IRQHandler(void)
 {
-    HAL_RTC_AlarmIRQHandler(&RTCHandle);
+  HAL_RTC_AlarmIRQHandler(&RTCHandle);
 }
 /******************************************************************************/
 /*                 STM32L0xx Peripherals Interrupt Handlers                   */
@@ -201,11 +201,11 @@ void PPP_IRQHandler(void)
 
 /**
  * @}
- */
+ */ 
 
 /**
  * @}
- */
+ */ 
 
 /**
  * @}

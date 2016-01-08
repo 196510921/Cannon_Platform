@@ -34,7 +34,7 @@ void dispatch_init( void )
     op_pool[DISPATCH_OP_POOL_SIZE-1].next = NULL;
     freeq.head = &op_pool[0];
     freeq.tail = &op_pool[DISPATCH_OP_POOL_SIZE-1];
-
+		
 }
 
 static operation_t* allocate( void )
@@ -80,16 +80,16 @@ void run_when_idle(function_t func,
 }
 uint32_t current_time( void )
 {
-
-    uint8_t* time;
-
-    return  RTC_CalendarShow(time);;
+	
+	uint8_t* time;
+	
+	return  RTC_CalendarShow(time);;
 }
 
 static void set_timer(uint32_t v)
 {
-
-    rtc_wake_up_timer_config(v);
+	
+	rtc_wake_up_timer_config(v);
 }
 
 void run_at_time(function_t func,
@@ -108,7 +108,7 @@ void run_at_time(function_t func,
         before = q->head;
 
         if ((before == NULL) ||
-                (LATTER_THAN(before->timestamp, op->timestamp))) {
+            (LATTER_THAN(before->timestamp, op->timestamp))) {
             op->next = q->head;
             q->head = op;
             if (q->tail == NULL) {
@@ -117,7 +117,7 @@ void run_at_time(function_t func,
         } else {
             while (before) {
                 if ((before->next == NULL) ||
-                        LATTER_THAN(before->next->timestamp, op->timestamp)) {
+                    LATTER_THAN(before->next->timestamp, op->timestamp)) {
                     op->next = before->next;
                     before->next = op;
 
@@ -189,7 +189,7 @@ static void dispatch_head_op(dispatch_queue_t* q, uint32_t now)
 
 }
 
-
+    
 static void reset_rtc( void )
 {
     uint32_t now, head_time, next_time, sleep_time;
@@ -198,14 +198,14 @@ static void reset_rtc( void )
         now = current_time();
         head_time = timerq.head->timestamp;
         sleep_time = (head_time - now) & RTC_COUNTER_MASK;
-
+       
         if (LATTER_THAN(head_time, now+MIN_RTC_DELAY)) {
             sleep_flag_set(1);
             set_timer(sleep_time);
         } else {
             sleep_flag_set(0);
         }
-
+				
     } else {
 
         set_timer(50000);
