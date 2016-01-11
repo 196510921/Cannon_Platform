@@ -14,12 +14,12 @@ char name[] = "CANNON_V1";
 uint8_t tx_power_level = 7;
 uint16_t adv_interval = 100;
 
-void jsensor_app_setSensors(void)
+void jsensor_app_set_sensors(void)
 {
-    jsensor_app_setSensor(JSENSOR_TYPE_HUMITY_TEMP);
-    jsensor_app_setSensor(JSENSOR_TYPE_PRESSURE);
-    jsensor_app_setSensor(JSENSOR_TYPE_MOTION_6AXIS);
-    jsensor_app_setSensor(JSENSOR_TYPE_MAGNET);
+    jsensor_app_set_sensor(JSENSOR_TYPE_HUMITY_TEMP);
+    jsensor_app_set_sensor(JSENSOR_TYPE_PRESSURE);
+    jsensor_app_set_sensor(JSENSOR_TYPE_MOTION_6AXIS);
+    jsensor_app_set_sensor(JSENSOR_TYPE_MAGNET);
 }
 
 void on_ready(void)
