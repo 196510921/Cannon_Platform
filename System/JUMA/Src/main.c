@@ -120,6 +120,11 @@ void user_process(void);
  * @param  None
  * @retval None
  */
+/*host*/
+extern volatile uint8_t host_notification_enabled;
+extern volatile uint8_t set_connectable;
+extern volatile   scan_device_found_info device_info;
+volatile uint8_t device_connectable = 0;
 extern RTC_HandleTypeDef RTCHandle;
 /* Buffers used for displaying Time and Date */
 uint8_t aShowTime[50] = {0};
@@ -164,6 +169,15 @@ int main(void)
     on_ready();
     while(1)
     {
+#ifdef CLIENT_ROLE
+        if((host_notification_enabled != TRUE) ) {
+
+            if(device_connectable == CONNECT_DEVICE_ENABLE) {
+
+                ble_host_connect(device_info.bdaddr);
+            }
+        }
+#endif
         HCI_Process();
 
         if(Ble_conn_state) {
