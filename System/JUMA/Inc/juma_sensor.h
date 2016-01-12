@@ -52,8 +52,8 @@ typedef struct _JSensor_MAG_data JSensor_MAG_Typedef;
 void jsensor_sys_init(void);
 
 // Application API/callback
-void jsensor_app_setSensors(void);
-void jsensor_app_setSensor(uint16_t sid);
+void jsensor_app_set_sensors(void);
+void jsensor_app_set_sensor(uint16_t sid);
 JSensor_Status jsensor_app_read_sensor(uint16_t sid, void *data);
 
 #endif //JUMA_SENSOR_H_

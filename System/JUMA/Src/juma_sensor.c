@@ -23,7 +23,7 @@ static void read_raw_magnetometer_data(void* args);
 /**
  * Should be implemented by application user.
  */
-__weak void jsensor_app_setSensors(void)
+__weak void jsensor_app_set_sensors(void)
 {
     return ;
 }
@@ -33,7 +33,7 @@ __weak void jsensor_app_setSensors(void)
  *
  * TODO: the input parameter is by sensor type or id?
  */
-void jsensor_app_setSensor(uint16_t sid)
+void jsensor_app_set_sensor(uint16_t sid)
 {
     if (sid == JSENSOR_TYPE_HUMITY_TEMP) {
         hum_temp_monitor_init();
@@ -67,7 +67,7 @@ JSensor_Status jsensor_app_read_sensor(uint16_t sid, void *data)
 }
 
 
-void __jsensor_initSensor(void)
+void __jsensor_init_sensor(void)
 {
     return;
 }
@@ -75,8 +75,8 @@ void __jsensor_initSensor(void)
 void jsensor_sys_init(void)
 {
     // Get wantted sensor list from app user.
-    jsensor_app_setSensors();
-    __jsensor_initSensor();
+    jsensor_app_set_sensors();
+    __jsensor_init_sensor();
 }
 
 /*init hts221*/

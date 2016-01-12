@@ -1,6 +1,5 @@
-//#include "sensor_service.h"
-
 #include "app.h"
+#include "juma_sensor.h"
 /*start adv*/
 
 const char *name = "BlueNRG_IOT_2";
@@ -10,47 +9,34 @@ uint16_t adv_interval = 100;
 static float humidity;
 static float temperature;
 
+static void sensor_read(void* arg);
+
 void on_ready(void)
 {
-    hum_temp_monitor_init();
+    jsensor_app_set_sensor(JSENSOR_TYPE_HUMITY_TEMP);
     /*Config Adv Parameter And Ready to Adv*/
     ble_set_adv_param(name, adv_address, tx_power_level, adv_interval);
     ble_device_start_advertising();
-
-    read_temp_hum(NULL);
+    sensor_read(NULL);
 }
 
-/*init hts221*/
-void hum_temp_monitor_init(void)
+static void sensor_read(void* arg)
 {
-    /* Initialize the HUM temp */
-    while(BSP_HUM_TEMP_isInitialized() != 1) {
-        HAL_Delay(10);
-        BSP_HUM_TEMP_Init();
+    {
+        int16_t humidity;
+        int16_t temperature;
+        JSensor_HUM_TEMP_Typedef tdef;
+
+        tdef.humidity = &humidity;
+        tdef.temperature = &temperature;
+
+        if (JSENSOR_OK == jsensor_app_read_sensor(JSENSOR_TYPE_HUMITY_TEMP, (void *)&tdef)) {
+            ble_device_send(0x00, 2, (uint8_t *)&temperature);
+            ble_device_send(0x01, 2, (uint8_t *)&humidity);
+        }
     }
-
 }
 
-/*Accept humidity,tempreture data*/
-void read_temp_hum(void* arg)
-{
-    uint8_t temp[2] = {0};
-    uint16_t temp_1 = 0;
-//	/*humity*/
-    BSP_HUM_TEMP_GetHumidity(&humidity);
-    temp_1 = (uint16_t)(humidity*100);
-    temp[0] = temp_1 >> 8;
-    temp[1] = temp_1 & 0xFF;
-    ble_device_send(0x01, 2, temp);
-    /*Temperature*/
-    BSP_HUM_TEMP_GetTemperature(&temperature);
-    temp_1 = (uint16_t)(temperature*100);
-    temp[0] = temp_1 >> 8;
-    temp[1] = temp_1 & 0xFF;
-    ble_device_send(0x00, 2, temp);
-
-    run_after_delay(read_temp_hum, NULL, 2000);
-}
 
 /* Device On Message */
 void ble_device_on_message(uint8_t type, uint16_t length, uint8_t* value)
