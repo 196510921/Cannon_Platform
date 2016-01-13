@@ -3,6 +3,19 @@
 
 
 #define BDADDR_SIZE 6
+
+/*adv parameter structure*/
+typedef struct
+{
+    uint8_t               type;                 /**< See @ref BLE_GAP_ADV_TYPES. */
+    uint8_t               fp;                   /**< Filter Policy, see @ref BLE_GAP_ADV_FILTER_POLICIES. */
+    uint16_t              interval;             /**< Advertising interval between 0x0020 and 0x4000 in 0.625 ms units (20ms to 10.24s), see @ref BLE_GAP_ADV_INTERVALS.
+                                                   - If type equals @ref BLE_GAP_ADV_TYPE_ADV_DIRECT_IND, this parameter must be set to 0 for high duty cycle directed advertising.
+                                                   - If type equals @ref BLE_GAP_ADV_TYPE_ADV_DIRECT_IND, set @ref BLE_GAP_ADV_INTERVAL_MIN <= interval <= @ref BLE_GAP_ADV_INTERVAL_MAX for low duty cycle advertising.*/
+    uint16_t              timeout;              /**< Advertising timeout between 0x0001 and 0x3FFF in seconds, 0x0000 disables timeout. See also @ref BLE_GAP_ADV_TIMEOUT_VALUES. If type equals @ref BLE_GAP_ADV_TYPE_ADV_DIRECT_IND, this parameter must be set to 0 for High duty cycle directed advertising. */
+
+} ble_gap_adv_params_t;
+
 ble_gap_adv_params_t m_adv_params;
 ble_gap_scan_params_t host_scan_param;
 
@@ -25,7 +38,6 @@ uint16_t write_handle;
 uint16_t notify_read_handle;
 uint16_t write_without_rsp_handle;
 uint16_t notify_handle;
-
 
 volatile uint8_t Ble_conn_state = BLE_CONNECTABLE;
 static uint16_t connection_handle = 0 ,notification_enabled = 0;
@@ -410,7 +422,7 @@ static void ble_host_device_found( le_advertising_info* adv_data)
     device_info.local_name_len = adv_data->data_RSSI[3];
     /*local name*/
     memcpy(device_info.local_name, (adv_data->data_RSSI)+4, device_info.local_name_len);
-    
+
     ble_host_found_device_info(device_info);
 }
 
